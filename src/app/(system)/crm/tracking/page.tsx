@@ -8,6 +8,7 @@ import Table from "@/components/generic/table";
 import Search from "@/components/generic/search";
 import { useState } from "react";
 import AddAction from "@/components/generic/add-action";
+import DialogForm from "@/components/module/crm/tracking/dialog-form";
 
 export default function Page() {
   type ViewMode = "table" | "cards" | "list";
@@ -59,6 +60,7 @@ export default function Page() {
       </ActionBar>
 
       <Table tableHeads={tableHeads}></Table>
+      <DialogForm open={formOpen} setOpen={setFormOpen} />
     </Container>
   );
 }
