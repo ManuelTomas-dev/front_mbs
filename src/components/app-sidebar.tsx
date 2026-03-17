@@ -68,7 +68,7 @@ const moduleCategories: NavItem[] = [
         title: "Contract",
         //icon: Building2,
         items: [
-          { title: "Contract List", href: "#/contract" },
+          { title: "Contract List", href: "/contract" },
           { title: "Client Management", href: "#/contract/client-management" },
           { title: "Purchase Orders", href: "#/contract/purchase-orders" },
           { title: "Work Location", href: "#/contract/work-location" },

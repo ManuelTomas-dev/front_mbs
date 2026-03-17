@@ -8,7 +8,9 @@ import Table from "@/components/generic/table";
 import Search from "@/components/generic/search";
 import { useState } from "react";
 import AddAction from "@/components/generic/add-action";
-import DialogForm from "@/components/module/crm/quotes/dialog-form";
+import DialogForm from "@/components/module/contract/dialog-form";
+import { Button } from "@/components/ui/button";
+import { Download } from "lucide-react";
 
 export default function Page() {
   type ViewMode = "table" | "cards" | "list";
@@ -20,36 +22,50 @@ export default function Page() {
 
   const [formOpen, setFormOpen] = useState(false);
 
-  const tableHeads = ["Ref.", "Title", "Client", "Currency", "Discount"];
+  const tableHeads = [
+    "Contract Nº",
+    "Client",
+    "Contract Name",
+    "Status",
+    "Value",
+    "Start Date",
+    "End Date",
+    "Contract Manager",
+  ];
 
   return (
     <Container>
       <Title
-        title="Quotes"
-        description="Manage and view quotes information in the MBS system."
+        title="Contracts"
+        description="Manage and view contracts information in the MBS system."
       />
 
       <CardContainer>
-        <Card title="Registered Quotations" content="1234" />
-        <Card title="Closed Quotations" content="10" />
-        <Card title="Discount Average" content="12%" />
-        <Card title="Registered Items" content="28" />
+        <Card title="Total Contracts" content="1234" />
+        <Card title="Total Contract Value" content="$40,500,00" />
+        <Card title="Closed Value" content="$12,500,00" />
+        <Card title="Active Value" content="$28,000,00" />
+        <Card title="Average Contract Value" content="$7,850,00" />
       </CardContainer>
 
       <ActionBar>
         <Search
-          searchBarPlaceholder="Search quotations..."
+          searchBarPlaceholder="Search contracts..."
           searchTerm={searchTerm}
           setSearchTerm={setSearchTerm}
         />
 
         <AddAction
-          addActionName="New Quotation"
+          addActionName="New Contract"
           viewMode={viewMode}
           setViewMode={setViewMode}
           setAddFormOpen={setFormOpen}
           setSelectedEntity={setEditEntity}
-        />
+        >
+          <Button type="button">
+            Export <Download />
+          </Button>
+        </AddAction>
       </ActionBar>
 
       <Table tableHeads={tableHeads}></Table>
