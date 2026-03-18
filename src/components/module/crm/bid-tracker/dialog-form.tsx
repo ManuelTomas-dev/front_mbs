@@ -24,9 +24,16 @@ import { DialogFooter } from "@/components/ui/dialog";
 interface DialogFormProps {
   open: boolean;
   setOpen: (value: boolean) => void;
+  selectedEntity?: any;
+  setSelectedEntity?: (value: any) => void;
 }
 
-function DialogForm({ open, setOpen }: DialogFormProps) {
+function DialogForm({
+  open,
+  setOpen,
+  selectedEntity,
+  setSelectedEntity,
+}: DialogFormProps) {
   return (
     <DialogContainer
       open={open}

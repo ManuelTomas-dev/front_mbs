@@ -15,8 +15,6 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { DialogFooter } from "@/components/ui/dialog";
 import { IQuote } from "@/types/crm/quotes";
-import { error } from "console";
-import { Quote } from "lucide-react";
 
 interface DialogFormProps {
   open: boolean;

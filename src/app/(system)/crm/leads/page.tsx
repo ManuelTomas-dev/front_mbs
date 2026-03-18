@@ -8,6 +8,8 @@ import Table from "@/components/generic/table";
 import Search from "@/components/generic/search";
 import { useState } from "react";
 import AddAction from "@/components/generic/add-action";
+import { Button } from "@/components/ui/button";
+import { Download } from "lucide-react";
 
 export default function Page() {
   type ViewMode = "table" | "cards" | "list";
@@ -20,12 +22,13 @@ export default function Page() {
   const [formOpen, setFormOpen] = useState(false);
 
   const tableHeads = [
-    "Customer Name",
-    "Contact Date",
-    "Purchase If Any",
-    "Customer Type",
-    "Date To Complete Future Actions",
-    "Actions Completed",
+    "Lead",
+    "Company",
+    "Contact",
+    "Source",
+    "Status",
+    "Owner",
+    "Last Contact",
   ];
 
   return (
@@ -36,10 +39,10 @@ export default function Page() {
       />
 
       <CardContainer>
-        <Card title="Registered Leads" content="1234" />
-        <Card title="Archived Lead" content="10" />
-        <Card title="Customers" content="12" />
-        <Card title="Customers Types" content="28" />
+        <Card title="New Leads" content="1234" />
+        <Card title="Hot Leads" content="10" />
+        <Card title="Opportunities" content="12" />
+        <Card title="Conversion" content="28%" />
       </CardContainer>
 
       <ActionBar>
@@ -55,7 +58,11 @@ export default function Page() {
           setViewMode={setViewMode}
           setAddFormOpen={setFormOpen}
           setSelectedEntity={setEditEntity}
-        />
+        >
+          <Button type="button">
+            Export <Download />
+          </Button>
+        </AddAction>
       </ActionBar>
 
       <Table tableHeads={tableHeads}></Table>
