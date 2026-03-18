@@ -1,25 +1,22 @@
+"use client";
+
+import React, { useActionState } from "react";
 import DialogContainer from "@/components/generic/dialog-container";
 import { Button } from "@/components/ui/button";
-import { Field, FieldLabel, FieldGroup } from "@/components/ui/field";
+import { Field, FieldLabel, FieldDescription } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
   SelectGroup,
-  SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Calendar } from "@/components/ui/calendar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import { Textarea } from "@/components/ui/textarea";
-import { Slider } from "@/components/ui/slider";
 import { DialogFooter } from "@/components/ui/dialog";
+import { IQuote } from "@/types/crm/quotes";
+import { error } from "console";
+import { Quote } from "lucide-react";
 
 interface DialogFormProps {
   open: boolean;
@@ -27,6 +24,32 @@ interface DialogFormProps {
 }
 
 function DialogForm({ open, setOpen }: DialogFormProps) {
+  async function action(prevState: Partial<IQuote>, formData: FormData) {
+    const payload = {
+      client_id: formData.get("client_id"),
+      client_location_id: formData.get("client_location_id"),
+      client_contract_id: formData.get("client_contract_id"),
+      opportunity_id: formData.get("opportunity_id"),
+      title: formData.get("title"),
+      currency_id: formData.get("currency_id"),
+      description: formData.get("description"),
+      notes: formData.get("notes"),
+      terms_conditions: formData.get("terms_conditions"),
+    };
+
+    return {};
+  }
+
+  async function handleOnSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+
+    await formAction(formData);
+  }
+
+  const initialState: Partial<IQuote> = {};
+  const [formState, formAction, pending] = useActionState(action, initialState);
+
   return (
     <DialogContainer
       open={open}
@@ -34,10 +57,10 @@ function DialogForm({ open, setOpen }: DialogFormProps) {
       title="Quote"
       description="Create a new quote in the MBS system."
     >
-      <form>
+      <form onSubmit={handleOnSubmit}>
         <Field>
           <FieldLabel>Client:</FieldLabel>
-          <Select>
+          <Select name="client_id">
             <SelectTrigger>
               <SelectValue placeholder="Select a client" />
             </SelectTrigger>
@@ -50,7 +73,7 @@ function DialogForm({ open, setOpen }: DialogFormProps) {
         <div className="grid grid-cols-2 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-5 mt-6">
           <Field>
             <FieldLabel>Client Location:</FieldLabel>
-            <Select>
+            <Select name="client_location_id">
               <SelectTrigger>
                 <SelectValue placeholder="Select a client location" />
               </SelectTrigger>
@@ -62,7 +85,7 @@ function DialogForm({ open, setOpen }: DialogFormProps) {
 
           <Field>
             <FieldLabel>Client Contact:</FieldLabel>
-            <Select>
+            <Select name="client_contact_id">
               <SelectTrigger>
                 <SelectValue placeholder="Select a client contact" />
               </SelectTrigger>
@@ -75,7 +98,7 @@ function DialogForm({ open, setOpen }: DialogFormProps) {
 
         <Field className="mt-6">
           <FieldLabel>Opportunity:</FieldLabel>
-          <Select>
+          <Select name="opportunity_id">
             <SelectTrigger>
               <SelectValue placeholder="Select a opportunity" />
             </SelectTrigger>
@@ -88,12 +111,16 @@ function DialogForm({ open, setOpen }: DialogFormProps) {
         <div className="grid grid-cols-2 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-5 mt-6">
           <Field>
             <FieldLabel>Title:</FieldLabel>
-            <Input type="text" placeholder="(Ex.: Condoflow)" />
+            <Input
+              type="text"
+              name="title"
+              placeholder="Introduce the title here"
+            />
           </Field>
 
           <Field>
             <FieldLabel>Currency:</FieldLabel>
-            <Select>
+            <Select name="currency_id">
               <SelectTrigger>
                 <SelectValue placeholder="Select a currency" />
               </SelectTrigger>
@@ -105,22 +132,28 @@ function DialogForm({ open, setOpen }: DialogFormProps) {
 
           <Field>
             <FieldLabel>Description:</FieldLabel>
-            <Textarea placeholder="Introduce a description here..." />
+            <Textarea
+              name="description"
+              placeholder="Introduce a description here..."
+            />
           </Field>
 
           <Field>
             <FieldLabel>Notes:</FieldLabel>
-            <Textarea placeholder="Introduce the notes here..." />
+            <Textarea name="notes" placeholder="Introduce the notes here..." />
           </Field>
         </div>
 
         <Field className="mt-6">
-          <FieldLabel>Notes:</FieldLabel>
-          <Textarea placeholder="Introduce the Terms & Conditions here..." />
+          <FieldLabel>Terms & Conditions:</FieldLabel>
+          <Textarea
+            name="terms_conditions"
+            placeholder="Introduce the Terms & Conditions here..."
+          />
         </Field>
 
         <DialogFooter className="mt-6">
-          <Button type="button">Save</Button>
+          <Button type="submit">Save</Button>
           <Button
             type="button"
             variant="outline"
