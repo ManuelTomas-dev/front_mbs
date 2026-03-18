@@ -23,6 +23,7 @@ type NavItem = {
   // icon?: LucideIcon
   items?: NavItem[]
 }
+
 const data = {
   user: {
     name: "Matuma",
@@ -43,8 +44,11 @@ const moduleCategories: NavItem[] = [
     //icon: Building2,
     items: [
       { title: "General Performance", href: "#/contract" },
-      { title: "Quotes Performance Views", href: "#/contract/client-management" },
-      { title: "Contract Performance Views", href: "#/contract/purchase-orders" },
+      { title: "Quotes Performance Overviews", href: "#/contract/client-management" },
+      { title: "Contract Performance Overviews", href: "#/contract/purchase-orders" },
+      { title: "Operation Overviews", href: "#/contract/purchase-orders" },
+      { title: "Finance Overviews", href: "#/contract/purchase-orders" },
+      { title: "People Management Overviews", href: "#/contract/purchase-orders" },
     ],
   },
 
@@ -52,22 +56,27 @@ const moduleCategories: NavItem[] = [
     title: "CRM",
     //icon: ShieldCheck,
     items: [
-      { title: "BID Tracker", href: "#/crm/bid-tracker" },
-      { title: "Tracking", href: "#/crm/tracking" },
+      {
+        title: "Leads",
+        //icon: Building2,
+        items: [
+          { title: "Management", href: "#/contract" },
+          { title: "Opportunities", href: "#/contract" },
+
+        ],
+      },
       { title: "Enquiries", href: "#/crm/enquiries" },
       { title: "Quotes", href: "#/crm/quotes" },
       { title: "Tenders", href: "#/crm/tenders" },
-      { title: "Tender Proposal", href: "#/crm/tender-proposal" },
       { title: "Proposal", href: "#/crm/proposal" },
-      { title: "Leads", href: "#/crm/leads" },
+      { title: "BID Tracker", href: "#/crm/bid-tracker" },
+      { title: "Tracking", href: "#/crm/tracking" },
       {
         title: "Contract",
         //icon: Building2,
         items: [
           { title: "Contract List", href: "#/contract" },
-          { title: "Client Management", href: "#/contract/client-management" },
-          { title: "Purchase Orders", href: "#/contract/purchase-orders" },
-          { title: "Work Location", href: "#/contract/work-location" },
+
         ],
       },
       {
@@ -86,36 +95,19 @@ const moduleCategories: NavItem[] = [
     //icon: Briefcase,
     items: [
       {
-        title: "QHSE",
-        //icon: Briefcase,
-        items: [
-          { title: "Non-Conformity", href: "#/qhse/non-conformity" },
-          { title: "Risk assessment", href: "#/qhse/risk-assessment" },
-          { title: "SOC", href: "#/qhse/soc" },
-          { title: "JSA", href: "#/qhse/jsa" },
-          { title: "Permetwork e Welding Work", href: "#/qhse/permetwork-e-welding-work" },
-          { title: "History", href: "#/qhse/history" },
-          { title: "Audit", href: "#/qhse/audit" },]
-      },
-      {
         title: "Operation",
         //icon: CircleIcon,
         items: [
           {
-            title: "Personnel",
-            //icon: Users,
+            title: "Services Order",
             items: [
-              { title: "Personnel Details", href: "/personnel/details" },
-              { title: "Job Title", href: "#/personnel/job-title" },
-              { title: "Qualification & Certification", href: "#/personnel/qualification-certification" },
-              { title: "Qualification List", href: "#/personnel/qualification-list" },
+              { title: "Services Order Management", href: "#/project/project-management#" },
             ],
           },
           {
             title: "Project",
             //icon: MapPin,
             items: [
-              { title: "Tasks", href: "#/project/tasks#" },
               { title: "Project Management", href: "#/project/project-management#" },
             ],
           },
@@ -128,7 +120,7 @@ const moduleCategories: NavItem[] = [
             ],
           },
           {
-            title: "Rig Reports",
+            title: "Rig",
             //icon: ShieldCheck,
             items: [
               { title: "Rig Report", href: "#/rig-report/rig-report#" },
@@ -136,7 +128,26 @@ const moduleCategories: NavItem[] = [
               { title: "Activity Graphs", href: "#/rig-report/activity-graphs#" },
             ],
           },
+          {
+            title: "Integrations",
+            href: "#/rig-report/rig-report#"
+
+          },
         ],
+      },
+      {
+        title: "QHSE",
+        //icon: Briefcase,
+        items: [
+          { title: "Non-Conformity", href: "#/qhse/non-conformity" },
+          { title: "Risk assessment", href: "#/qhse/risk-assessment" },
+          { title: "SOC", href: "#/qhse/soc" },
+          { title: "JSA", href: "#/qhse/jsa" },
+          { title: "Permetwork", href: "#/qhse/permetwork-e-welding-work" },
+          { title: " Welding Work", href: "#/qhse/permetwork-e-welding-work" },
+          { title: "History", href: "#/qhse/history" },
+          { title: "Audit", href: "#/qhse/audit" },]
+
       },
     ],
   },
@@ -150,6 +161,15 @@ const moduleCategories: NavItem[] = [
         //icon: Briefcase,
         items: [
           { title: "Requests", href: "#/procurement/requests" },
+
+          {
+            title: "Purchase Orders", items: [
+              { title: "Quotations", href: "#/procurement/inventory/inventory-management" },
+              { title: "RF Aproval", href: "#/procurement/inventory/inventory-management" },
+              { title: "P O", href: "#/procurement/inventory/inventory-management" },
+
+            ]
+          },
           {
             title: "Inventory", items: [
               { title: "PPE", href: "#/procurement/inventory/inventory-management" },
@@ -158,23 +178,64 @@ const moduleCategories: NavItem[] = [
               { title: "Chemicals", href: "#/procurement/inventory/inventory-management" },
               { title: "Hoses", href: "#/procurement/inventory/inventory-management" },
               { title: "Others", href: "#/procurement/inventory/inventory-management" },
+              { title: "Catalog", href: "#/procurement/inventory/inventory-management" },
             ]
           },
-          { title: "Purchase Orders", href: "#/procurement/purchase-orders" },
-          { title: "Logistics", href: "#/procurement/logistics" },
+          {
+            title: "Logistics",
+            items: [
+              { title: "Requests", href: "#/procurement/inventory/inventory-management" },
+              { title: "Management", href: "#/procurement/inventory/inventory-management" },
+
+            ]
+          },
         ],
       },
       {
         title: "Finance",
         //icon: Briefcase,
+
         items: [
-          { title: "Account", href: "#/finance/account" },
-          { title: "Received", href: "#/finance/received" },
-          { title: "Account", href: "#/finance/account" },
-          { title: "Payable", href: "#/finance/payable" },
-          { title: "Treasury", href: "#/finance/treasury" },
-          { title: "Accounting", href: "#/finance/accounting" },
+          {
+            title: "Account Received",
+            items: [
+              {
+                title: "Invoices",
+                items: [
+                  { title: "New Invoice", href: "#/finance/account-received/invoices" },
+                  { title: "Draft Invoices", href: "#/finance/account-received/invoices" },
+                  { title: "Sent Invoices", href: "#/finance/account-received/receipts" },
+                  { title: "Paid Invoices", href: "#/finance/account-received/receipts" },
+                  { title: "Overdue", href: "#/finance/account-received/receipts" },
+                ]
+              },
+
+              {
+                title: "Receipt", items: [
+
+
+                  { title: "Convert Invoice to receipt", href: "#/finance/account-received/receipts" },
+                ]
+              },
+
+
+            ]
+          },
+          {
+            title: "Account Payable", items: [
+              { title: "P O", href: "#/finance/account-payable/bills" },
+            ]
+          },
+          {
+            title: "Treasury", items: [
+              { title: "Billing", href: "#/finance/treasury/bank" },
+              { title: "Payments", href: "#/finance/treasury/bank" },
+            ]
+          },
+          { title: "Accounting", href: "#/finance/account" },
           { title: "Audit", href: "#/finance/audit" },
+
+
         ],
       },
     ]
@@ -182,9 +243,19 @@ const moduleCategories: NavItem[] = [
 
 
   {
-    title: "HR & Recruitment",
+    title: "People Management",
     // //icon: BadgeCheck,
     items: [
+      {
+        title: "Personnel",
+        //icon: Users,
+        items: [
+          { title: "Personnel Details", href: "/personnel/details" },
+          { title: "Job Title", href: "#/personnel/job-title" },
+          { title: "Qualification & Certification", href: "#/personnel/qualification-certification" },
+          { title: "Qualification List", href: "#/personnel/qualification-list" },
+        ],
+      },
       {
         title: "HR",
         //icon: ShieldCheck,
@@ -206,31 +277,31 @@ const moduleCategories: NavItem[] = [
 
         ],
       },
-      {
-        title: "Document Library",
-        //icon: Briefcase,
-        items: [
-          { title: "Meetings", href: "#/document-library/meetings" },
-          { title: "Minutes", href: "#/document-library/minutes" },
-          { title: "Organograms", href: "#/document-library/organograms" },
-          { title: "Technical Library", href: "#/document-library/technical-library" },
-          { title: "Orders", href: "#/document-library/orders" },
-          { title: "Abbreviations", href: "#/document-library/abbreviations" },
-        ],
-      },
+
 
     ],
   },
 
   {
-    title: "Knowledge & Social Midia | Partners",
+    title: "Knowledge & Social Midia",
     // //icon: Settings,
     items: [
       {
         title: "Knowledge",
         // //icon: BadgeCheck,
         items: [
-          { title: "Document Library", href: "#/Knowledge/document-library" },
+          {
+            title: "Document Library",
+            //icon: Briefcase,
+            items: [
+              { title: "Meetings", href: "#/document-library/meetings" },
+              { title: "Minutes", href: "#/document-library/minutes" },
+              { title: "Organograms", href: "#/document-library/organograms" },
+              { title: "Technical Library", href: "#/document-library/technical-library" },
+              { title: "Orders", href: "#/document-library/orders" },
+              { title: "Abbreviations", href: "#/document-library/abbreviations" },
+            ],
+          },
           { title: "General Notice", href: "#/Knowledge/general-notice" },
           { title: "Safety Notice", href: "#/Knowledge/safety-notice" },
           { title: "Onboarding", href: "#/Knowledge/onboarding" },
@@ -246,19 +317,34 @@ const moduleCategories: NavItem[] = [
           { title: "Trend Monitoring", href: "#/social-media/trend-monitoring" },
         ],
       },
-      {
-        title: "Partners",
-        //icon: Briefcase,
-        items: [
-          { title: "Client", href: "#/partners/client" },
-          { title: "Management", href: "#/partners/management" },
-          { title: "Category Supplier", href: "#/partners/category-supplier" },
-          { title: "Management", href: "#/partners/management" },
-          { title: " Work Location", href: "#/partners/work-location" },
-        ],
-      }
+
+
     ],
   },
+
+  {
+    title: "Partners",
+    //icon: Briefcase,
+    items: [
+      {
+        title: "Client Management", items: [
+          { title: "Client List", href: "/partner/client" },
+          { title: "Client Category", href: "#/partners/category-supplier" },
+
+        ]
+      },
+      //     { title: "Purchase Orders", href: "#/contract/purchase-orders" },
+      //     { title: "Work Location", href: "#/contract/work-location" },
+      {
+        title: "Supplier Management", items: [
+          { title: "Supplier List", href: "/partner/supplier" },
+          { title: "Supplier Category", href: "#/partners/category-supplier" },
+
+        ]
+      },
+      { title: "Work Location", href: "#/partners/work-location" },
+    ],
+  }
 
 
 ]
@@ -303,7 +389,7 @@ export function CategorizedMenuNavigation({ items, level = 0 }: { items: NavItem
           return (
             <Collapsible key={item.title} className="group/collapsible relative">
               <CollapsibleTrigger asChild>
-                <button className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium hover:bg-accent transition-colors">
+                <button className="flex items-center gap-2 rounded-full px-3 py-2 text-sm font-medium hover:bg-accent transition-colors">
                   {/* {item.icon && <item.icon className="size-4" />} */}
                   <span>{item.title}</span>
                   {hasChildren && (
@@ -370,12 +456,12 @@ function NavUserHorizontal({ user }: { user: any }) {
     <div className="ml-auto flex items-center gap-2 border-l border-border pl-2 cursor-pointer">
       <img
         src={"https://media.licdn.com/dms/image/v2/D4E03AQF8nQkA6jIcSw/profile-displayphoto-crop_800_800/B4EZy.O2gOIEAI-/0/1772718090751?e=1775088000&v=beta&t=Vwqb-VFe25RUiY4kl17b-CW4NUFQB6Y46166aPUXMAo"}
-        alt={user.name}
+        alt={useLoggedUser.first_name}
         className="size-8 rounded-full"
       />
       <div className="hidden flex-col sm:flex">
-        <p className="text-xs font-medium">{user.name}</p>
-        <p className="text-xs text-muted-foreground">{user.email}</p>
+        <p className="text-xs font-medium">{useLoggedUser.first_name} {useLoggedUser.last_name}</p>
+        <p className="text-xs text-muted-foreground">{useLoggedUser.work_email}</p>
       </div>
     </div>
   )

@@ -10,13 +10,14 @@ export const metadata: Metadata = {
     description: "Leading provider of equipment certification and inspection services for the oil and gas industry, ensuring safety, quality, and compliance in offshore operations",
 }
 
+// container relative h-screen flex-col items-center justify-center grid lg:max-w-none lg:grid-cols-2 lg:px-0 
 
 
 export default function AuthenticationPage() {
     return (
-        <div className="py-6 lg:py-0">
-            <div className="container relative h-screen flex-col items-center justify-center grid lg:max-w-none lg:grid-cols-2 lg:px-0">
-                <div className="relative h-full flex-col bg-muted p-10 text-gray-50 dark:border-r bg-center bg-cover lg:flex" style={{ backgroundImage: "url('/mbs.jpeg')" }}>
+        <div className="py-6 lg:py-0  h-screen bg-blue-100 rounded-">
+            <div className="grid gap-4 grid-cols-1 lg:grid-cols-3 h-full">
+                <div className="relative h-full flex-col bg-muted p-10 text-gray-50 dark:border-r bg-center bg-cover lg:flex col-span-2" style={{ backgroundImage: "url('/mbs.jpeg')" }}>
                     <div className="flex items-center">
                         <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center mr-3">
                             {/* <div className="w-4 h-4 rounded-sm" style={{ backgroundColor: "#0c84fa" }}></div> */}
@@ -38,7 +39,7 @@ export default function AuthenticationPage() {
                 </div>
 
                 {/* Right side - Auth Form */}
-                <div className="lg:p-8">
+                <div className="lg:p-8 rounded-4xl">
                     <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-87.5">
                         <AuthForm />
 

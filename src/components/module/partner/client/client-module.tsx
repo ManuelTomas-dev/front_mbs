@@ -27,66 +27,78 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Table as TableComponent, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { PersonnelModuleSkeleton, PersonnelCardsSkeleton, PersonnelListSkeleton } from "./personnel-skeleton"
-import { PersonnelDetailsDialog} from "./personnel-details-dialog"
-import { PersonnelFormDialog} from "./personnel-form-dialog"
-import { DeleteConfirmationDialog } from "./delete-confirmation-dialog"
+import { ClientModuleSkeleton, ClientCardsSkeleton, ClientListSkeleton } from "./client-skeleton"
+// import { ClientDetailsDialog } from "./client-details-dialog"
+import { ClientFormDialog } from "./client-form-dialog"
+// import { DeleteConfirmationDialog } from "./delete-confirmation-dialog"
 
 import { useToast } from "@/hooks/use-toast"
-import { IPersonnel } from "@/types/operation/personnel"
-import { usePersonnel } from "@/hooks/operation/personnel"
+
+import { IClient } from "@/types/partnercopy/client"
+import { useClient } from "@/hooks/partner/client"
+import { LocationFormDialog } from "./Location/location-form-dialog"
+import { ContactClientFormDialog } from "./Contact/contact-client-form-dialog"
+// import { create } from "domain"
 
 type ViewMode = "table" | "cards" | "list"
 
-export function PersonnelModule() {
+export function ClientModule() {
     const [searchTerm, setSearchTerm] = useState("")
     const [viewMode, setViewMode] = useState<ViewMode>("table")
-    const [selectedPersonnel, setSelectedPersonnel] = useState<IPersonnel | null>(null)
+    const [selectedClient, setSelectedClient] = useState<IClient | null>(null)
     const [detailsOpen, setDetailsOpen] = useState(false)
     const [formOpen, setFormOpen] = useState(false)
-    const [editingPersonnel, setEditingPersonnel] = useState<IPersonnel | null>(null)
+    const [editingClient, setEditingClient] = useState<IClient | null>(null)
+    const [addLocationOpen, setAddLocationOpen] = useState(false)
+    const [addContactOpen, setAddContactOpen] = useState(false)
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
-    const [personnelToDelete, setPersonnelToDelete] = useState<IPersonnel | null>(null)
+    const [clientToDelete, setClientToDelete] = useState<IClient | null>(null)
 
-    const { createPersonnel, deletePersonnel, updatePersonnel, isLoading, personnel, error } = usePersonnel();
+    const { createClient, deleteClient, updateClient, isLoading, clients, error } = useClient();
     const { toast } = useToast();
 
-    const handleAction = (action: string, personnel: IPersonnel) => {
-        console.log(`[v0] ${action} action for personnel:`, personnel.first_name)
+    const handleAction = (action: string, client: IClient) => {
+        console.log(`[v0] ${action} action for client:`, client.nome_cliente)
 
         switch (action) {
             case "view":
-                setSelectedPersonnel(personnel)
+                setSelectedClient(client)
                 setDetailsOpen(true)
                 break
             case "edit":
-                setEditingPersonnel(personnel)
+                setEditingClient(client)
                 setFormOpen(true)
                 break
+            case "add-location":
+                setAddLocationOpen(true)
+                break
+            case "add-contact":
+                setAddContactOpen(true)
+                break
             case "duplicate":
-                createPersonnel({
-                    first_name: `${personnel.first_name} (Cópia)`,
-                    last_name: personnel.last_name,
-                    work_email: personnel.work_email,
+                createClient({
+                    nome_cliente: `${client.nome_cliente} (Cópia)`,
+                    sede_cliente: client.sede_cliente,
+                    telefone_principal: client.telefone_principal,
                 })
                 break
             case "delete":
-                setPersonnelToDelete(personnel)
+                setClientToDelete(client)
                 setDeleteDialogOpen(true)
                 break
         }
     }
 
-    const handleCreateSubmit = async (data: Partial<IPersonnel>) => {
-        await createPersonnel(data)
+    const handleCreateSubmit = async (data: Partial<IClient>) => {
+        await createClient(data)
     }
 
-    const handleEditSubmit = async (data: Partial<IPersonnel>) => {
-        if (editingPersonnel) {
+    const handleEditSubmit = async (data: Partial<IClient>) => {
+        if (editingClient) {
             try {
                 // Passamos um único objeto com id e payload conforme definido no hook
-                await updatePersonnel({
-                    id: editingPersonnel.id,
+                await updateClient({
+                    id: editingClient.id,
                     payload: data
                 });
                 // Opcional: fechar modal ou limpar estado de edição aqui
@@ -99,15 +111,15 @@ export function PersonnelModule() {
             }
         }
     }
-    const handleDeleteConfirm = () => {
-        if (personnelToDelete) {
-            deletePersonnel(personnelToDelete.id)
-            setDeleteDialogOpen(false)
-            setPersonnelToDelete(null)
-        }
-    }
+    // const handleDeleteConfirm = () => {
+    //     if (clientToDelete) {
+    //         deleteClient(clientToDelete.id)
+    //         setDeleteDialogOpen(false)
+    //         setClientToDelete(null)
+    //     }
+    // }
 
-    const ActionDropdown = ({ personnel }: { personnel: IPersonnel }) => (
+    const ActionDropdown = ({ client }: { client: IClient }) => (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="h-8 w-8 p-0">
@@ -115,24 +127,32 @@ export function PersonnelModule() {
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => handleAction("view", personnel)}>
+                <DropdownMenuItem onClick={() => handleAction("view", client)}>
                     <Eye className="mr-2 h-4 w-4" />
                     View Details
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => handleAction("edit", personnel)}>
+                <DropdownMenuItem onClick={() => handleAction("edit", client)}>
                     <Edit className="mr-2 h-4 w-4" />
                     Edit
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => handleAction("duplicate", personnel)}>
+                <DropdownMenuItem onClick={() => handleAction("add-location", client)}>
+                    <Plus className="mr-2 h-4 w-4" />
+                    Add Location
+                </DropdownMenuItem>
+                 <DropdownMenuItem onClick={() => handleAction("add-location", client)}>
+                    <Plus className="mr-2 h-4 w-4" />
+                    Add Contact
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleAction("duplicate", client)}>
                     <Copy className="mr-2 h-4 w-4" />
                     Duplicate
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => handleAction("archive", personnel)}>
+                <DropdownMenuItem onClick={() => handleAction("archive", client)}>
                     <Archive className="mr-2 h-4 w-4" />
                     Archive
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => handleAction("delete", personnel)} className="text-red-600 focus:text-red-600">
+                <DropdownMenuItem onClick={() => handleAction("delete", client)} className="text-red-600 focus:text-red-600">
                     <Trash2 className="mr-2 h-4 w-4" />
                     Delete
                 </DropdownMenuItem>
@@ -145,28 +165,28 @@ export function PersonnelModule() {
             <TableComponent>
                 <TableHeader>
                     <TableRow>
-                        <TableHead>Title</TableHead>
-                        <TableHead>First Name</TableHead>
-                        <TableHead>Last Name</TableHead>
-                        <TableHead>Job description</TableHead>
-                        <TableHead>Location</TableHead>
-                        <TableHead>Work e-mail</TableHead>
+                        <TableHead>Name</TableHead>
+                        <TableHead>Sede</TableHead>
+                        <TableHead>Postal Code</TableHead>
+                        <TableHead>NIF</TableHead>
+                        <TableHead>Phone</TableHead>
+                        <TableHead>Status</TableHead>
                         <TableHead>Created at</TableHead>
                         <TableHead className="text-right">Actions</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {filteredPersonnel.map((personnel) => (
-                        <TableRow key={personnel.id}>
-                            <TableCell className="font-medium">{personnel.title}</TableCell>
-                            <TableCell className="font-medium">{personnel.first_name} {personnel.last_name}</TableCell>
-                            <TableCell className="font-medium"> {personnel.last_name}</TableCell>
-                            <TableCell> {personnel.work_title.name}   </TableCell>
-                            <TableCell>  {personnel.location.name}</TableCell>
-                            <TableCell> {personnel.work_email}</TableCell>
-                            <TableCell>{new Date(personnel.created_at).toLocaleDateString("en-US")}</TableCell>
+                    {filteredClients.map((client) => (
+                        <TableRow key={client.id}>
+                            <TableCell className="font-medium">{client.nome_cliente}</TableCell>
+                            <TableCell className="font-medium">{client.sede_cliente}</TableCell>
+                            <TableCell className="font-medium"> {client.codigo_postal}</TableCell>
+                            <TableCell> {client.nif}   </TableCell>
+                            <TableCell>  {client.telefone_principal}</TableCell>
+                            <TableCell> {client.status_cliente ? "Active" : "Inactive"}</TableCell>
+                            <TableCell>{new Date(client.data_registro_cliente).toLocaleDateString("en-US")}</TableCell>
                             <TableCell className="text-right">
-                                <ActionDropdown personnel={personnel} />
+                                <ActionDropdown client={client} />
                             </TableCell>
                         </TableRow>
                     ))}
@@ -177,21 +197,20 @@ export function PersonnelModule() {
 
     const renderCardsView = () => (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {filteredPersonnel.map((personnel) => (
-                <Card key={personnel.id}>
+            {filteredClients.map((client) => (
+                <Card key={client.id}>
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">{personnel.title}{personnel.first_name} {personnel.last_name}</CardTitle>
-                        <ActionDropdown personnel={personnel} />
+                        <CardTitle className="text-sm font-medium">{client.nome_cliente}</CardTitle>
+                        <ActionDropdown client={client} />
                     </CardHeader>
                     <CardContent>
                         <div className="space-y-2">
-                            <Badge variant={personnel.is_active ? "default" : "secondary"}>{personnel.is_active ? "Active" : "Inactive"}</Badge>
+                            <Badge variant={client.status_cliente ? "default" : "secondary"}>{client.status_cliente ? "Active" : "Inactive"}</Badge>
                             <div className="text-xs text-muted-foreground space-y-1 grid grid-cols-2 gap-x-2">
-                                <p>Job description: {personnel.work_title.name}</p>
-                                <p>Location: {personnel.location.name}</p>
-                                <p>Work e-mail: {personnel.work_email}</p>
-                                <p>Created at: {new Date(personnel.created_at).toLocaleDateString("en-US")}</p>
-                                <p>Updated at: {new Date(personnel.updated_at).toLocaleDateString("en-US")}</p>
+                                <p>Job description: {client.sede_cliente}</p>
+                                <p>Location: {client.codigo_postal}</p>
+                                <p>Work e-mail: {client.telefone_principal}</p>
+                                <p>Created at: {new Date(client.data_registro_cliente).toLocaleDateString("en-US")}</p>
                             </div>
                         </div>
                     </CardContent>
@@ -202,34 +221,34 @@ export function PersonnelModule() {
 
     const renderListView = () => (
         <div className="space-y-2">
-            {filteredPersonnel.map((personnel) => (
-                <Card key={personnel.id}>
+            {filteredClients.map((client) => (
+                <Card key={client.id}>
                     <CardContent className="flex items-center justify-between p-4">
                         <div className="flex-1 space-y-1">
                             <div className="flex items-center gap-3">
-                                <h3 className="font-medium">{personnel.title} {personnel.first_name} {personnel.last_name}</h3>
-                                <Badge variant={personnel.is_active ? "default" : "secondary"}>{personnel.is_active ? "Active" : "Inactive"}</Badge>
+                                <h3 className="font-medium">{client.nome_cliente}</h3>
+                                <Badge variant={client.status_cliente ? "default" : "secondary"}>{client.status_cliente ? "Active" : "Inactive"}</Badge>
                             </div>
                             <div className="flex  items-center gap-4 text-sm text-muted-foreground ">
-                                <span>Job description: {personnel.work_title.name}</span>
-                                <span>Work e-mail: {personnel.work_email}</span>
-                                <span>Created at: {new Date(personnel.created_at).toLocaleDateString("en-US")}</span>
+                                <span>Job description: {client.sede_cliente}</span>
+                                <span>Work e-mail: {client.telefone_principal}</span>
+                                <span>Created at: {new Date(client.data_registro_cliente).toLocaleDateString("en-US")}</span>
                             </div>
                         </div>
-                        <ActionDropdown personnel={personnel} />
+                        <ActionDropdown client={client} />
                     </CardContent>
                 </Card>
             ))}
         </div>
     )
 
-    const filteredPersonnel = personnel.filter((personnel) => personnel.first_name.toLowerCase().includes(searchTerm.toLowerCase()) || personnel.last_name.toLowerCase().includes(searchTerm.toLowerCase()))
+    const filteredClients = clients.filter((client) => client.nome_cliente.toLowerCase().includes(searchTerm.toLowerCase()) || client.sede_cliente.toLowerCase().includes(searchTerm.toLowerCase()))
 
-    const activePersonnel = filteredPersonnel.filter((personnel) => personnel.is_active).length
-    const inactivePersonnel = filteredPersonnel.filter((personnel) => !personnel.is_active).length
+    const activeClients = filteredClients.filter((client) => client.status_cliente).length
+    const inactiveClients = filteredClients.filter((client) => !client.status_cliente).length
 
     if (isLoading) {
-        return <PersonnelModuleSkeleton />
+        return <ClientModuleSkeleton />
     }
 
     if (error) return <p>Error fetching data</p>
@@ -237,35 +256,35 @@ export function PersonnelModule() {
     return (
         <div className="space-y-6">
             <div>
-                <h2 className="text-3xl font-bold tracking-tight">Personnel</h2>
+                <h2 className="text-3xl font-bold tracking-tight">Clients</h2>
                 <p className="text-muted-foreground">
-                    Manage and view personnel information in the MBS system.
+                    Manage and view client information in the MBS system.
                 </p>
             </div>
 
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                 <Card>
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">Total Personnel Count</CardTitle>
+                        <CardTitle className="text-sm font-medium">Total Clients Count</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">{filteredPersonnel.length}</div>
+                        <div className="text-2xl font-bold">{filteredClients.length}</div>
                     </CardContent>
                 </Card>
                 <Card>
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">Active Personnel Count</CardTitle>
+                        <CardTitle className="text-sm font-medium">Active Clients Count</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">{activePersonnel}</div>
+                        <div className="text-2xl font-bold">{activeClients}</div>
                     </CardContent>
                 </Card>
                 <Card>
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">Inactive Personnel Count</CardTitle>
+                        <CardTitle className="text-sm font-medium">Inactive Clients Count</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">{inactivePersonnel}</div>
+                        <div className="text-2xl font-bold">{inactiveClients}</div>
                     </CardContent>
                 </Card>
                 <Card>
@@ -274,7 +293,7 @@ export function PersonnelModule() {
                     </CardHeader>
                     <CardContent>
                         <div className="text-2xl font-bold">
-                            {filteredPersonnel.length > 0 ? Math.round((activePersonnel / filteredPersonnel.length) * 100) : 0}%
+                            {filteredClients.length > 0 ? Math.round((activeClients / filteredClients.length) * 100) : 0}%
                         </div>
                     </CardContent>
                 </Card>
@@ -285,7 +304,7 @@ export function PersonnelModule() {
                     <div className="relative">
                         <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
                         <Input
-                            placeholder="Search personnel..."
+                            placeholder="Search clients..."
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                             className="pl-8 w-75"
@@ -299,12 +318,12 @@ export function PersonnelModule() {
                 <div className="flex items-center space-x-2">
                     <Button
                         onClick={() => {
-                            setEditingPersonnel(null)
+                            setEditingClient(null)
                             setFormOpen(true)
                         }}
                     >
                         <Plus className="mr-2 h-4 w-4" />
-                        New Personnel
+                        New Client
                     </Button>
                     <Button variant={viewMode === "table" ? "default" : "outline"} size="sm" onClick={() => setViewMode("table")}>
                         <Table className="h-4 w-4" />
@@ -318,43 +337,57 @@ export function PersonnelModule() {
                 </div>
             </div>
 
-            {isLoading && viewMode === "table" && <PersonnelModuleSkeleton />}
-            {isLoading && viewMode === "cards" && <PersonnelCardsSkeleton />}
-            {isLoading && viewMode === "list" && <PersonnelListSkeleton />}
+            {isLoading && viewMode === "table" && <ClientModuleSkeleton />}
+            {isLoading && viewMode === "cards" && <ClientCardsSkeleton />}
+            {isLoading && viewMode === "list" && <ClientListSkeleton />}
 
             {!isLoading && viewMode === "table" && renderTableView()}
             {!isLoading && viewMode === "cards" && renderCardsView()}
             {!isLoading && viewMode === "list" && renderListView()}
 
-            <PersonnelDetailsDialog
-                personnel={selectedPersonnel}
+            {/* <DetailsDialog
+                client={selectedClient}
                 open={detailsOpen}
                 onOpenChange={setDetailsOpen}
-                onEdit={(personnel) => {
-                    setDetailsOpen(false)
-                    setEditingPersonnel(personnel)
+                onEdit={(client) => {
+                    setEditingClient(client)
                     setFormOpen(true)
                 }}
-            />
+            /> */}
 
-            <PersonnelFormDialog
-                personnel={editingPersonnel}
+            <ClientFormDialog
+                client={editingClient}
                 open={formOpen}
                 onOpenChange={(open) => {
                     setFormOpen(open)
-                    if (!open) setEditingPersonnel(null)
+                    if (!open) setEditingClient(null)
                 }}
-                onSubmit={editingPersonnel ? handleEditSubmit : handleCreateSubmit}
+                onSubmit={editingClient ? handleEditSubmit : handleCreateSubmit}
+            />
+            <LocationFormDialog
+                clientId={selectedClient ? selectedClient.id : ""}
+                open={addLocationOpen} // Use a variável de estado aqui
+                onOpenChange={(open) => {
+                    setAddLocationOpen(open)
+                    if (!open) setSelectedClient(null) // Limpa ao fechar
+                }}
             />
 
+            <ContactClientFormDialog
+                open={addContactOpen}
+                onOpenChange={(open) => {
+                    setAddContactOpen(open)
+                    if (!open) setSelectedClient(null) // Limpa ao fechar
+                }}
+            />
+            {/* 
             <DeleteConfirmationDialog
-
                 open={deleteDialogOpen}
                 onOpenChange={setDeleteDialogOpen}
                 onConfirm={handleDeleteConfirm}
-                title={personnelToDelete?.first_name || ""}
-                description="This action cannot be undone. The personnel will be permanently removed from the system."
-            />
+                title={clientToDelete?.nome_cliente || ""}
+                description="This action cannot be undone. The client will be permanently removed from the system."
+            /> */}
         </div>
     )
 }

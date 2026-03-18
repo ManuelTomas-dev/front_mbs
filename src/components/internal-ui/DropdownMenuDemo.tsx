@@ -18,12 +18,11 @@ import Link from "next/link"
 const settings = [
   { title: "Access Log", href: "#/system-settings/access-log" },
   { title: "My Location", href: "#/system-settings/my-location" },
-  { title: "Country Custom Codes", href: "#/system-settings/country-custom-codes" },
-  { title: "Categories", href: "#/system-settings/categories" },
-  { title: "Training Management", href: "#/system-settings/training-management" },
-  { title: "Qualification Category", href: "#/system-settings/qualification-category" },
-  { title: "Supplier Currencies", href: "#/system-settings/supplier-currencies" },
-  { title: "Product Line Revenue Value", href: "#/system-settings/product-line-revenue-value" },
+  { title: "Country", href: "#/system-settings/country-custom-codes" },
+  { title: "Custom Codes", href: "#/system-settings/country-custom-codes" },
+  { title: "Currencies", href: "#/system-settings/supplier-currencies" },
+  { title: "Product Line", href: "#/system-settings/product-line-revenue-value" },
+  { title: "Revenue Value", href: "#/system-settings/product-line-revenue-value" },
 ]
 
 export function DropdownMenuDemo({ children }: { children: React.ReactNode }) {

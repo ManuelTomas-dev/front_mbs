@@ -8,6 +8,7 @@ interface AuthState {
   user: any | null
   loading: boolean
   fetchMe: () => Promise<void>
+  getUserId: () => string | null
   login: (email: string, password: string) => Promise<boolean>
   logout: () => Promise<void>
 }
@@ -31,7 +32,7 @@ export const useAuthStore = create<AuthState>()(
 
           // Chama o fetchMe que agora sabe extrair o ID
           await get().fetchMe()
-          
+
           set({ loading: false })
           return true
         } catch (error) {
@@ -43,7 +44,7 @@ export const useAuthStore = create<AuthState>()(
 
       logout: async () => {
         try {
-          await api.post("/auth/logout").catch(() => null) 
+          await api.post("/auth/logout").catch(() => null)
         } finally {
           document.cookie = "token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;"
           set({ token: null, user: null, loading: false })
@@ -63,7 +64,7 @@ export const useAuthStore = create<AuthState>()(
 
           // 2. Busca pelo ID dinâmico extraído do token
           const { data } = await api.get(`/users/${userId}`)
-          
+
           set({ user: data, loading: false })
         } catch (error: any) {
           console.error("FetchMe Error:", error)
@@ -73,6 +74,16 @@ export const useAuthStore = create<AuthState>()(
         } finally {
           set({ loading: false })
         }
+      },
+
+      getUserId: () => {
+        const token = get().token
+        if (!token) return null
+
+        // 1. Decodifica o token para pegar o ID (sub)
+        const decoded: any = jwtDecode(token)
+        const userId = decoded.sub // O Flask-JWT-Extended usa 'sub' para a identidade
+        return userId
       },
     }),
     {

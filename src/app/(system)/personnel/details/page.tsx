@@ -6,5 +6,5 @@ export const metadata = {
 }
 
 export default function Page() {
-  return <PersonnelModule />
+  return <main className="container mx-auto max-w-360"><PersonnelModule /></main>
 }
