@@ -110,7 +110,7 @@ Chevron Angola`}
         </Tabs>
       </div>
       <DialogFooter className="mt-6">
-        <Button type="submit">Create Opportunity</Button>
+        <Button type="submit">Convert To Opportunity</Button>
         <Button
           type="button"
           variant="outline"
