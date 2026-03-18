@@ -10,14 +10,19 @@ import { useState } from "react";
 import AddAction from "@/components/generic/add-action";
 import { Button } from "@/components/ui/button";
 import { Download } from "lucide-react";
+import DialogForm from "@/components/module/crm/leads/dialog-form";
+import DialogDetails from "@/components/module/crm/leads/dialog-details";
 
 export default function Page() {
   type ViewMode = "table" | "cards" | "list";
 
   const [searchTerm, setSearchTerm] = useState("");
   const [viewMode, setViewMode] = useState<ViewMode>("table");
-  const [editEntity, setEditEntity] = useState({});
+  const [selectedEntity, setSelectedEntity] = useState({});
   const [detailsEntity, setDetailsEntity] = useState({});
+  const [deleteDialog, setDeletedDialog] = useState(false);
+
+  const [openDetailsDialog, setOpenDetailsDialog] = useState(true);
 
   const [formOpen, setFormOpen] = useState(false);
 
@@ -57,15 +62,22 @@ export default function Page() {
           viewMode={viewMode}
           setViewMode={setViewMode}
           setAddFormOpen={setFormOpen}
-          setSelectedEntity={setEditEntity}
+          setSelectedEntity={setSelectedEntity}
         >
-          <Button type="button">
+          <Button type="button" className="justify-self-end">
             Export <Download />
           </Button>
         </AddAction>
       </ActionBar>
 
-      <Table tableHeads={tableHeads}></Table>
+      <Table
+        tableHeads={tableHeads}
+        setSelectedItem={setSelectedEntity}
+        setDeleteDialog={setDeletedDialog}
+      ></Table>
+
+      <DialogForm setOpen={setFormOpen} open={formOpen} />
+      <DialogDetails setOpen={setOpenDetailsDialog} open={openDetailsDialog} />
     </Container>
   );
 }

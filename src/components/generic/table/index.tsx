@@ -17,8 +17,8 @@ interface BaseData {
 interface TableProps<T extends BaseData> {
   tableHeads: string[];
   data?: T[];
-  setSelectedItem: (value: any) => void;
-  setDeleteDialog: (value: boolean) => void;
+  setSelectedItem?: (value: any) => void;
+  setDeleteDialog?: (value: boolean) => void;
   children?: React.ReactNode;
 }
 

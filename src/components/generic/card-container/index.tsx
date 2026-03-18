@@ -10,7 +10,7 @@ function CardContainer({ extraStyle, children }: CardContainerProps) {
   console.log(cardNumber);
   return (
     <div
-      className={`grid grid-cols-${cardNumber} sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-${cardNumber} gap-4 mt-4 ${extraStyle}`}
+      className={`grid grid-cols-${cardNumber} sm:grid-cols-1 md:grid-cols-2 ${`lg:grid-cols-${cardNumber}`} gap-3 mt-4 ${extraStyle}`}
     >
       {children}
     </div>

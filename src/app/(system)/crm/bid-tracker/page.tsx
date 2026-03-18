@@ -63,7 +63,7 @@ export default function Page() {
 
       <Table
         tableHeads={tableHeads}
-        // data = pass data coming from the database here
+        // data y= pass data coming from the database here
         setSelectedItem={setSelectedEntity}
         setDeleteDialog={setDeleteDialog}
       ></Table>

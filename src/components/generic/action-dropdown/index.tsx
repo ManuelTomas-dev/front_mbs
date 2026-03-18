@@ -14,8 +14,8 @@ interface BaseItem {
 }
 interface ActionDropdownProps {
   item: BaseItem;
-  setSelectedEntity: (value: any) => void;
-  setDeleteDialogOpen: (value: boolean) => void;
+  setSelectedEntity?: (value: any) => void;
+  setDeleteDialogOpen?: (value: boolean) => void;
 }
 
 function ActionDropdwon({
@@ -26,14 +26,18 @@ function ActionDropdwon({
   const handleAction = (action: string) => {
     switch (action) {
       case "view":
-        setSelectedEntity(item);
+        if (setSelectedEntity) setSelectedEntity(item);
         break;
       case "edit":
-        setSelectedEntity(item);
+        if (setSelectedEntity) setSelectedEntity(item);
         break;
       case "delete":
-        setSelectedEntity(item);
-        setDeleteDialogOpen(true);
+        if (setSelectedEntity) {
+          setSelectedEntity(item);
+        }
+        if (setDeleteDialogOpen) {
+          setDeleteDialogOpen(true);
+        }
         break;
     }
   };
