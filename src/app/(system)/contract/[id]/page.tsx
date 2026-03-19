@@ -12,11 +12,15 @@ import { Resources } from "@/components/module/service/resources";
 import { ResourcesDetail } from "@/components/module/service/resources-detail";
 import { Attachments } from "@/components/module/service/attachments";
 import { ApprovalHistory } from "@/components/module/service/approval-history";
+import { TaskDetail } from "@/components/module/project/task-detail";
+import { Module } from "@/components/module/project/module";
+import { List } from "@/components/module/project/list";
+import { WellboreTaskDetail } from "@/components/module/project/page";
 
 export default function Page() {
   return (
     <>
-      <Resources />
+      <Attachments />
     </>
   );
 }
