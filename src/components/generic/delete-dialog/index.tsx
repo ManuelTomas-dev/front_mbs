@@ -12,8 +12,10 @@ import {
 interface DeleteDialogProps {
   open: boolean;
   prompt: string;
-  setOpen: () => void;
-  operationDefinition: () => void;
+  setOpen: (value: boolean) => void;
+  operationDefinition?: () => void;
+  isLoading?: boolean;
+  selectedEntity: any;
 }
 
 function DeleteDialog({
@@ -21,6 +23,8 @@ function DeleteDialog({
   prompt,
   setOpen,
   operationDefinition,
+  isLoading,
+  selectedEntity,
 }: DeleteDialogProps) {
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
@@ -37,7 +41,7 @@ function DeleteDialog({
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction
-            onClick={onConfirm}
+            onClick={operationDefinition}
             className="bg-red-600 hover:bg-red-700 focus:ring-red-600"
             disabled={isLoading}
           >

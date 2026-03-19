@@ -9,14 +9,16 @@ import Search from "@/components/generic/search";
 import { useState } from "react";
 import AddAction from "@/components/generic/add-action";
 import DialogForm from "@/components/module/crm/bid-tracker/dialog-form";
+import DeleteDialog from "@/components/generic/delete-dialog";
 
 export default function Page() {
   type ViewMode = "table" | "cards" | "list";
 
   const [searchTerm, setSearchTerm] = useState("");
   const [viewMode, setViewMode] = useState<ViewMode>("table");
-  const [editEntity, setEditEntity] = useState({});
-  const [detailsEntity, setDetailsEntity] = useState({});
+  const [selectedEntity, setSelectedEntity] = useState({});
+  const [detailsDialog, setDetailsDialog] = useState(false);
+  const [deleteDialog, setDeleteDialog] = useState(false);
 
   const [formOpen, setFormOpen] = useState(false);
 
@@ -55,13 +57,31 @@ export default function Page() {
           viewMode={viewMode}
           setViewMode={setViewMode}
           setAddFormOpen={setFormOpen}
-          setSelectedEntity={setEditEntity}
+          setSelectedEntity={setSelectedEntity}
         />
       </ActionBar>
 
-      <Table tableHeads={tableHeads}></Table>
+      <Table
+        tableHeads={tableHeads}
+        // data y= pass data coming from the database here
+        setSelectedItem={setSelectedEntity}
+        setDeleteDialog={setDeleteDialog}
+      ></Table>
 
-      <DialogForm open={formOpen} setOpen={setFormOpen} />
+      <DialogForm
+        open={formOpen}
+        setOpen={setFormOpen}
+        selectedEntity={selectedEntity}
+      />
+
+      <DeleteDialog
+        selectedEntity={selectedEntity}
+        open={deleteDialog}
+        setOpen={setDeleteDialog}
+        prompt="Are you sure that you want to delete this BID Tracker?"
+        // operationDefinition={} Passar funcao que efectua o delete
+        // isLoading={} Passar boolean que carrega o loading da funcao
+      />
     </Container>
   );
 }

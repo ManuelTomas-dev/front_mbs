@@ -8,21 +8,40 @@ import {
 import { Eye, MoreHorizontal, Edit, Archive, Trash2, Copy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
+interface BaseItem {
+  id: string | number;
+  [key: string]: any;
+}
 interface ActionDropdownProps {
-  handleViewAction: () => void;
-  handleEditAction: () => void;
-  handleDuplicateAction: () => void;
-  handleArchiveAction: () => void;
-  handleDeleteAction: () => void;
+  item: BaseItem;
+  setSelectedEntity?: (value: any) => void;
+  setDeleteDialogOpen?: (value: boolean) => void;
 }
 
 function ActionDropdwon({
-  handleViewAction,
-  handleEditAction,
-  handleDuplicateAction,
-  handleArchiveAction,
-  handleDeleteAction,
+  item,
+  setDeleteDialogOpen,
+  setSelectedEntity,
 }: ActionDropdownProps) {
+  const handleAction = (action: string) => {
+    switch (action) {
+      case "view":
+        if (setSelectedEntity) setSelectedEntity(item);
+        break;
+      case "edit":
+        if (setSelectedEntity) setSelectedEntity(item);
+        break;
+      case "delete":
+        if (setSelectedEntity) {
+          setSelectedEntity(item);
+        }
+        if (setDeleteDialogOpen) {
+          setDeleteDialogOpen(true);
+        }
+        break;
+    }
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -31,25 +50,25 @@ function ActionDropdwon({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => handleViewAction}>
+        <DropdownMenuItem onClick={() => handleAction("view")}>
           <Eye className="mr-2 h-4 w-4" />
           View Details
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => handleEditAction}>
+        <DropdownMenuItem onClick={() => handleAction("edit")}>
           <Edit className="mr-2 h-4 w-4" />
           Edit
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => handleDuplicateAction}>
+        <DropdownMenuItem onClick={() => handleAction("duplicate")}>
           <Copy className="mr-2 h-4 w-4" />
           Duplicate
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => handleArchiveAction}>
+        <DropdownMenuItem onClick={() => handleAction("archive")}>
           <Archive className="mr-2 h-4 w-4" />
           Archive
         </DropdownMenuItem>
         <DropdownMenuItem
-          onClick={() => handleDeleteAction}
+          onClick={() => handleAction("delete")}
           className="text-red-600 focus:text-red-600"
         >
           <Trash2 className="mr-2 h-4 w-4" />
