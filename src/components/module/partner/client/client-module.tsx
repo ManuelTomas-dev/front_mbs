@@ -14,6 +14,11 @@ import {
     Grid3X3,
     List,
     Plus,
+    Map,
+    MapPin,
+    CreditCard,
+    Phone,
+    Calendar,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -36,8 +41,10 @@ import { useToast } from "@/hooks/use-toast"
 
 import { IClient } from "@/types/partnercopy/client"
 import { useClient } from "@/hooks/partner/client"
-import { LocationFormDialog } from "./Location/location-form-dialog"
-import { ContactClientFormDialog } from "./Contact/contact-client-form-dialog"
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { LocationModule } from "./Location/location-module"
+import { LocationModuleDialog } from "./Location/location-module-dialog"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 // import { create } from "domain"
 
 type ViewMode = "table" | "cards" | "list"
@@ -71,9 +78,7 @@ export function ClientModule() {
                 break
             case "add-location":
                 setAddLocationOpen(true)
-                break
-            case "add-contact":
-                setAddContactOpen(true)
+                setSelectedClient(client)
                 break
             case "duplicate":
                 createClient({
@@ -136,12 +141,8 @@ export function ClientModule() {
                     Edit
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => handleAction("add-location", client)}>
-                    <Plus className="mr-2 h-4 w-4" />
-                    Add Location
-                </DropdownMenuItem>
-                 <DropdownMenuItem onClick={() => handleAction("add-location", client)}>
-                    <Plus className="mr-2 h-4 w-4" />
-                    Add Contact
+                    <Map className="mr-2 h-4 w-4" />
+                    Ver Location
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => handleAction("duplicate", client)}>
                     <Copy className="mr-2 h-4 w-4" />
@@ -195,29 +196,97 @@ export function ClientModule() {
         </div>
     )
 
-    const renderCardsView = () => (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {filteredClients.map((client) => (
-                <Card key={client.id}>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">{client.nome_cliente}</CardTitle>
-                        <ActionDropdown client={client} />
-                    </CardHeader>
-                    <CardContent>
-                        <div className="space-y-2">
-                            <Badge variant={client.status_cliente ? "default" : "secondary"}>{client.status_cliente ? "Active" : "Inactive"}</Badge>
-                            <div className="text-xs text-muted-foreground space-y-1 grid grid-cols-2 gap-x-2">
-                                <p>Job description: {client.sede_cliente}</p>
-                                <p>Location: {client.codigo_postal}</p>
-                                <p>Work e-mail: {client.telefone_principal}</p>
-                                <p>Created at: {new Date(client.data_registro_cliente).toLocaleDateString("en-US")}</p>
+ const renderCardsView = () => (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {filteredClients.map((client) => (
+            <Card key={client.id} className="overflow-hidden border-none shadow-lg hover:shadow-xl transition-shadow duration-300 bg-linear-to-br from-card to-muted/50">
+                {/* Header decorativo estilo ID Card */}
+                <div className="h-2 bg-primary w-full" />
+                
+                <CardHeader className="flex flex-row items-center gap-4 pb-2">
+                    <Avatar className="h-16 w-16 border-2 border-background shadow-sm">
+                        <AvatarImage src={`https://api.dicebear.com/7.x/initials/svg?seed=${client.nome_cliente}`} />
+                        <AvatarFallback className="bg-primary/10 text-primary">
+                            {client.nome_cliente.substring(0, 2).toUpperCase()}
+                        </AvatarFallback>
+                    </Avatar>
+                    
+                    <div className="flex-1 min-w-0">
+                        <CardTitle className="text-lg font-bold truncate leading-tight">
+                            {client.nome_cliente}
+                        </CardTitle>
+                        <Badge variant={client.status_cliente ? "default" : "secondary"} className="mt-1 text-[10px] h-5">
+                            {client.status_cliente ? "ATIVO" : "INATIVO"}
+                        </Badge>
+                    </div>
+                    
+                    <ActionDropdown client={client} />
+                </CardHeader>
+
+                <CardContent className="pt-2">
+                    {/* Linha Divisória Sutil */}
+                    <div className="h-px w-full bg-border mb-4 opacity-50" />
+                    
+                    <div className="grid grid-cols-1 gap-y-3">
+                        {/* Seção de Dados estilo Cartão de Identificação */}
+                        <div className="flex items-center gap-3 text-sm text-muted-foreground group">
+                            <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                                <CreditCard className="h-4 w-4 text-primary/70" />
+                            </div>
+                            <div className="flex flex-col">
+                                <span className="text-[10px] font-semibold text-muted-foreground/50 uppercase tracking-widest">NIF</span>
+                                <span className="font-mono text-xs">{client.nif || "000000000"}</span>
                             </div>
                         </div>
-                    </CardContent>
-                </Card>
-            ))}
-        </div>
-    )
+
+                        <div className="flex items-center gap-3 text-sm text-muted-foreground group">
+                            <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                                <MapPin className="h-4 w-4 text-primary/70" />
+                            </div>
+                            <div className="flex flex-col">
+                                <span className="text-[10px] font-semibold text-muted-foreground/50 uppercase tracking-widest">SEDE</span>
+                                <span className="truncate text-xs font-medium">{client.sede_cliente}</span>
+                            </div>
+                        </div>
+
+                        <div className="flex items-center gap-3 text-sm text-muted-foreground group">
+                            <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                                <Phone className="h-4 w-4 text-primary/70" />
+                            </div>
+                            <div className="flex flex-col">
+                                <span className="text-[10px] font-semibold text-muted-foreground/50 uppercase tracking-widest">CONTATO</span>
+                                <span className="text-xs font-medium">{client.telefone_principal}</span>
+                            </div>
+                        </div>
+
+                        <div className="flex items-center gap-3 text-sm text-muted-foreground group">
+                            <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                                <Calendar className="h-4 w-4 text-primary/70" />
+                            </div>
+                            <div className="flex flex-col">
+                                <span className="text-[10px] font-semibold text-muted-foreground/50 uppercase tracking-widest">REGISTRO</span>
+                                <span className="text-xs font-medium">
+                                    {new Date(client.data_registro_cliente).toLocaleDateString("en-US", {
+                                        month: 'short',
+                                        year: 'numeric'
+                                    })}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </CardContent>
+
+                {/* Rodapé Decorativo discreto */}
+                <div className="px-6 py-2 bg-muted/30 border-t border-border flex justify-between items-center">
+                   <span className="text-[9px] font-bold text-muted-foreground/40 tracking-tighter uppercase">MBS Partner Client System</span>
+                   <div className="flex gap-1">
+                       <div className="w-1.5 h-1.5 rounded-full bg-primary/40 animate-pulse" />
+                   </div>
+                </div>
+            </Card>
+        ))}
+    </div>
+)
 
     const renderListView = () => (
         <div className="space-y-2">
@@ -364,22 +433,12 @@ export function ClientModule() {
                 }}
                 onSubmit={editingClient ? handleEditSubmit : handleCreateSubmit}
             />
-            <LocationFormDialog
-                clientId={selectedClient ? selectedClient.id : ""}
-                open={addLocationOpen} // Use a variável de estado aqui
-                onOpenChange={(open) => {
-                    setAddLocationOpen(open)
-                    if (!open) setSelectedClient(null) // Limpa ao fechar
-                }}
-            />
 
-            <ContactClientFormDialog
-                open={addContactOpen}
-                onOpenChange={(open) => {
-                    setAddContactOpen(open)
-                    if (!open) setSelectedClient(null) // Limpa ao fechar
-                }}
-            />
+            <LocationModuleDialog open={addLocationOpen} onOpenChange={(open) => {
+                setAddLocationOpen(open)
+                if (!open) setSelectedClient(null) // Limpa ao fechar
+            }} clientId={selectedClient ? selectedClient.id : ""} />
+            
             {/* 
             <DeleteConfirmationDialog
                 open={deleteDialogOpen}
@@ -388,6 +447,8 @@ export function ClientModule() {
                 title={clientToDelete?.nome_cliente || ""}
                 description="This action cannot be undone. The client will be permanently removed from the system."
             /> */}
+
+
         </div>
     )
 }

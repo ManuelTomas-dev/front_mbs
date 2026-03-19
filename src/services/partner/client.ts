@@ -9,7 +9,7 @@ export async function getClients(): Promise<IClient[]> {
 }
 
 // Criar título
-export async function createClient(payload: Partial<IClient>) {
+export async function createClient( payload: Partial<IClient>) {
     const { data } = await api.post("/client", payload)
     return data
 }

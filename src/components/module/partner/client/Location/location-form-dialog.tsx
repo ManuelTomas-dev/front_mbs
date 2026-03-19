@@ -16,30 +16,45 @@ import { Label } from "@/components/ui/label"
 import { ILocation } from "@/types/partner/location"
 
 interface LocationFormDialogProps {
+  location: ILocation | null
   open: boolean
   onOpenChange: (open: boolean) => void
+  onSubmit: (data: Partial<ILocation>) => Promise<void>
   clientId: string
 }
 
 export function LocationFormDialog({
+  location,
   open,
   onOpenChange,
+  onSubmit,
   clientId,
 }: LocationFormDialogProps) {
   const [formData, setFormData] = useState<Partial<ILocation>>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
 
+  useEffect(() => {
+    if (location) {
+      setFormData(location)
+    } else {
+      setFormData({
+        id_client: clientId,
+        designacao_localidade_cliente: "",
+        endereco: "",
+      })
+    }
+  }, [location, clientId, open])
 
-//   const handleSubmit = async (e: React.FormEvent) => {
-//     e.preventDefault()
-//     setIsSubmitting(true)
-//     try {
-//       await onSubmit(formData)
-//       onOpenChange(false)
-//     } finally {
-//       setIsSubmitting(false)
-//     }
-//   }
+  const handleSubmit = async (e: React.SubmitEvent) => {
+    e.preventDefault()
+    setIsSubmitting(true)
+    try {
+      await onSubmit(formData)
+      onOpenChange(false)
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -55,7 +70,7 @@ export function LocationFormDialog({
           </DialogDescription>
         </DialogHeader>
 
-        <form className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="name">Location Name *</Label>
@@ -72,19 +87,6 @@ export function LocationFormDialog({
                 required
               />
             </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="city">City</Label>
-              <Input
-                id="city"
-                value={formData.cidade || ""}
-                onChange={(e) =>
-                  setFormData({ ...formData, cidade: e.target.value })
-                }
-                placeholder="Enter city"
-              />
-            </div>
-
             <div className="col-span-2 space-y-2">
               <Label htmlFor="address">Address *</Label>
               <Input
@@ -97,76 +99,7 @@ export function LocationFormDialog({
                 required
               />
             </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="postal">Postal Code</Label>
-              <Input
-                id="postal"
-                value={formData.codigo_postal || ""}
-                onChange={(e) =>
-                  setFormData({ ...formData, codigo_postal: e.target.value })
-                }
-                placeholder="Enter postal code"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="country">Country</Label>
-              <Input
-                id="country"
-                value={formData.pais || ""}
-                onChange={(e) =>
-                  setFormData({ ...formData, pais: e.target.value })
-                }
-                placeholder="Enter country"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="phone">Phone</Label>
-              <Input
-                id="phone"
-                value={formData.telefone_localidade || ""}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    telefone_localidade: e.target.value,
-                  })
-                }
-                placeholder="Enter phone number"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                value={formData.email_localidade || ""}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    email_localidade: e.target.value,
-                  })
-                }
-                placeholder="Enter email"
-              />
-            </div>
-
-            <div className="col-span-2 space-y-2">
-              <Label htmlFor="notes">Observations</Label>
-              <Textarea
-                id="notes"
-                value={formData.observacoes || ""}
-                onChange={(e) =>
-                  setFormData({ ...formData, observacoes: e.target.value })
-                }
-                placeholder="Enter any observations"
-                rows={3}
-              />
-            </div>
           </div>
-
           <DialogFooter>
             <Button
               type="button"
