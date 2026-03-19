@@ -33,8 +33,41 @@ export default function Page() {
     "Contract Manager",
   ];
 
+  const data = [
+    {
+      contract_number: "1",
+      client: "Manuel Tomas",
+      contract_name: "Validações",
+      status: "Pending",
+      value: "50 000kz",
+      start_date: "19/03/2026",
+      end_date: "22/03/2026",
+      contract_manager: "Edson Zongo",
+    },
+    {
+      contract_number: "1",
+      client: "Manuel Tomas",
+      contract_name: "Validações",
+      status: "Pending",
+      value: "50 000kz",
+      start_date: "19/03/2026",
+      end_date: "22/03/2026",
+      contract_manager: "Edson Zongo",
+    },
+    {
+      contract_number: "1",
+      client: "Manuel Tomas",
+      contract_name: "Validações",
+      status: "Pending",
+      value: "50 000kz",
+      start_date: "19/03/2026",
+      end_date: "22/03/2026",
+      contract_manager: "Edson Zongo",
+    },
+  ];
+
   return (
-    <Container>
+    <Container style="container mx-auto max-w-360">
       <Title
         title="Contracts"
         description="Manage and view contracts information in the MBS system."
@@ -68,7 +101,11 @@ export default function Page() {
         </AddAction>
       </ActionBar>
 
-      <Table tableHeads={tableHeads}></Table>
+      <Table
+        data={data}
+        tableHeads={tableHeads}
+        detailsLink="/contract/crm"
+      ></Table>
 
       <DialogForm open={formOpen} setOpen={setFormOpen} />
     </Container>

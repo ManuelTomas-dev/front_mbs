@@ -86,6 +86,7 @@ export function QuotationManagement() {
         <Card title="Total Value Pipeline" content="$40,500,00" />
         <Card title="Approved Value" content="$12,500,00" />
         <Card title="Conversion Rate" content="45%" />
+        <Card title="Average Bid Cost" content="$12,500" />
       </CardContainer>
 
       <ActionBar>

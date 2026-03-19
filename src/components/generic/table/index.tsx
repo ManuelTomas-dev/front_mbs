@@ -22,6 +22,7 @@ interface TableProps<T extends BaseData> {
   children?: React.ReactNode;
   style?: string;
   addActions?: boolean;
+  detailsLink?: string;
 }
 
 function Table<T extends BaseData>({
@@ -32,6 +33,7 @@ function Table<T extends BaseData>({
   children,
   style,
   addActions = true,
+  detailsLink,
 }: TableProps<T>) {
   const firstItem = data?.[0] ?? {};
   const dataKeys = Object.keys(firstItem).filter((key) => key != "id");
@@ -61,6 +63,7 @@ function Table<T extends BaseData>({
                         item={item}
                         setSelectedEntity={setSelectedItem}
                         setDeleteDialogOpen={setDeleteDialog}
+                        detailsLink={detailsLink}
                       />{" "}
                     </TableCell>
                   ) : null}

@@ -21,7 +21,7 @@ import {
 
 export function ContractDetail() {
   return (
-    <div className="min-h-screen p-6">
+    <div className="container mx-auto max-w-360 min-h-screen p-6">
       {/* Header */}
       <div className="mb-6">
         <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
