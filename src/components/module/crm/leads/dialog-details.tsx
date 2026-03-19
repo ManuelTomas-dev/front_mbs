@@ -4,8 +4,6 @@ import DialogContainer from "@/components/generic/dialog-container";
 import { DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { PhoneIcon, FlameIcon, Check, Download } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import ContactInformation from "./contact-information";
 import TypeInformation from "./type-information";
@@ -13,7 +11,7 @@ import Search from "@/components/generic/search";
 import ActionBar from "@/components/generic/action-bar";
 import Table from "@/components/generic/table";
 import { useState } from "react";
-import { Textarea } from "@/components/ui/textarea";
+import EmailInformation from "./email-information";
 
 interface DialogDetailsProps {
   open: boolean;
@@ -46,28 +44,17 @@ function DialogDetails({ open, setOpen }: DialogDetailsProps) {
         <TypeInformation />
       </div>
       <Separator />
-      <div className="flex flex-col">
-        <h3 className="font-semibold py-2 ml-3">Description & Email Inquiry</h3>
-        <Textarea
-          rows={10}
-          className="max-h-[10px] overflow-y-auto resize-none"
-          value={`Good day,
-I am Paulo Almeida, the Procurement Manager at Chevron
-Angola. I am reaching out to request a quotation for the supply
-and installation of filtration systems for an offshore tank.
-Please find atached our RFQ with detailed specifications and
-requirements. We would appreciate your prompt response
-Best regards
-Paulo Almeida
-Chevron Angola`}
-          readOnly
-        />
-      </div>
-      <div className="flex justify-end">
-        <Button type="button" className="w-[50px] self-end">
-          <Download />
-        </Button>
-      </div>
+      <EmailInformation
+        emailData={`Good day,
+    I am Paulo Almeida, the Procurement Manager at Chevron
+    Angola. I am reaching out to request a quotation for the supply
+    and installation of filtration systems for an offshore tank.
+    Please find atached our RFQ with detailed specifications and
+    requirements. We would appreciate your prompt response
+    Best regards
+    Paulo Almeida
+    Chevron Angola`}
+      />
       <Separator />
 
       <div className="w-full">
