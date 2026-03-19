@@ -100,11 +100,11 @@ export function TenderDetail() {
   const [activeTab, setActiveTab] = useState("overview");
 
   return (
-    <div className="min-h-screen bg-slate-100 p-6">
-      <div className="mx-auto max-w-5xl">
+    <div className="p-6">
+      <div>
         {/* Header */}
-        <Card className="mb-0 rounded-b-none border-b-0">
-          <CardContent className="p-4">
+        <Card className="bg-white mb-0 rounded-b-none border-none">
+          <CardContent className="p-4 bg-white border-none">
             <div className="flex items-center gap-2 text-slate-700">
               <FileText className="h-5 w-5 text-slate-500" />
               <span className="font-semibold text-slate-800">
@@ -112,14 +112,14 @@ export function TenderDetail() {
               </span>
               <span className="text-slate-400">|</span>
               <span className="text-slate-500">Bening:</span>
-              <span className="font-medium text-blue-600">25 Mar 2026</span>
+              <span className="font-medium">25 Mar 2026</span>
             </div>
           </CardContent>
         </Card>
 
         {/* Tabs */}
-        <div className="bg-white border-x border-slate-200">
-          <div className="flex border-b border-slate-200">
+        <div className="bg-white">
+          <div className="flex">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
@@ -141,13 +141,13 @@ export function TenderDetail() {
         </div>
 
         {/* Requirements Content */}
-        <Card className="rounded-t-none border-t-0">
-          <CardHeader className="pb-4">
-            <CardTitle className="text-lg font-semibold text-slate-800">
+        <Card className="rounded-t-none bg-white border-none">
+          <CardHeader className="pb-4 border-none">
+            <CardTitle className="text-lg font-semibold text-slate-800 border-none">
               Requirements
             </CardTitle>
           </CardHeader>
-          <CardContent className="p-0">
+          <CardContent className="p-0 border-none">
             <div className="divide-y divide-slate-100">
               {requirements.map((requirement) => (
                 <div
@@ -159,9 +159,7 @@ export function TenderDetail() {
                     <div
                       className={cn(
                         "w-6 h-6 rounded flex items-center justify-center",
-                        requirement.checked
-                          ? "bg-green-500 text-white"
-                          : "border-2 border-slate-300",
+                        requirement.checked ? "bg-green-500 text-white" : "",
                       )}
                     >
                       {requirement.checked && <Check className="w-4 h-4" />}
