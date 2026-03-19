@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
   Plus,
@@ -13,6 +12,12 @@ import {
   AlertCircle,
   ChevronRight,
 } from "lucide-react";
+import CardContainer from "@/components/generic/card-container";
+import Card from "@/components/generic/card";
+import Table from "@/components/generic/table";
+import Search from "@/components/generic/search";
+import ActionBar from "@/components/generic/action-bar";
+import AddAction from "@/components/generic/add-action";
 
 type AmendmentStatus =
   | "in-review"
@@ -105,14 +110,14 @@ function StatusBadge({ status }: { status: AmendmentStatus }) {
 }
 
 export function ContractAmendments() {
-  const [activeTab, setActiveTab] = useState("all");
+  type ViewMode = "table" | "cards" | "list";
 
-  const stats = [
-    { label: "Total Amendments", value: 4, color: "text-slate-800" },
-    { label: "Active Amendments", value: 3, color: "text-green-600" },
-    { label: "Pending Approval", value: 1, color: "text-red-600" },
-    { label: "Completed", value: 2, color: "text-slate-500" },
-  ];
+  const [activeTab, setActiveTab] = useState("all");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [viewMode, setViewMode] = useState<ViewMode>("table");
+  const [editEntity, setEditEntity] = useState({});
+  const [detailsEntity, setDetailsEntity] = useState({});
+  const [formOpen, setFormOpen] = useState(false);
 
   const tabs = [
     { id: "all", label: "All Amendments" },
@@ -120,8 +125,14 @@ export function ContractAmendments() {
     { id: "archived", label: "Archived" },
   ];
 
+  const tableHeads = [
+    "Amendment Title",
+    "Status",
+    "Effective Date",
+    "Last Updated",
+  ];
   return (
-    <div className="min-h-screen bg-slate-100 p-6">
+    <div className="min-h-screen p-6">
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Header */}
         <div className="flex items-start justify-between">
@@ -139,10 +150,6 @@ export function ContractAmendments() {
               <span className="text-slate-600">Amendments</span>
             </nav>
           </div>
-          <Button className="bg-[#1e3a5f] hover:bg-[#152a45] text-white">
-            <Plus className="h-4 w-4 mr-2" />
-            New Amendment
-          </Button>
         </div>
 
         {/* Tabs */}
@@ -163,130 +170,30 @@ export function ContractAmendments() {
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-4 gap-4">
-          {stats.map((stat) => (
-            <Card
-              key={stat.label}
-              className="bg-white border-slate-200 shadow-sm"
-            >
-              <CardContent className="p-4">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium text-slate-600">
-                    {stat.label}
-                  </span>
-                  <span className={`text-2xl font-bold ${stat.color}`}>
-                    {stat.value}
-                  </span>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+        <CardContainer>
+          <Card title="Total Amendments" content="4" />
+          <Card title="Active Amendments" content="4" />
+          <Card title="Pending Approval" content="4" />
+          <Card title="Completed" content="4" />
+        </CardContainer>
 
         {/* Data Table */}
-        <Card className="bg-white border-slate-200 shadow-sm overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="bg-slate-50 border-b border-slate-200">
-                  <th className="text-left px-6 py-4 text-sm font-semibold text-slate-700">
-                    Amendment Title
-                  </th>
-                  <th className="text-left px-6 py-4 text-sm font-semibold text-slate-700">
-                    Type
-                  </th>
-                  <th className="text-left px-6 py-4 text-sm font-semibold text-slate-700">
-                    Status
-                  </th>
-                  <th className="text-left px-6 py-4 text-sm font-semibold text-slate-700">
-                    Effective Date
-                  </th>
-                  <th className="text-left px-6 py-4 text-sm font-semibold text-slate-700">
-                    Last Updated
-                  </th>
-                  <th className="text-left px-6 py-4 text-sm font-semibold text-slate-700">
-                    Actions
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {amendments.map((amendment, index) => (
-                  <tr
-                    key={amendment.id}
-                    className={`border-b border-slate-100 hover:bg-slate-50 transition-colors ${
-                      index % 2 === 1 ? "bg-slate-50/50" : "bg-white"
-                    }`}
-                  >
-                    <td className="px-6 py-4">
-                      <a
-                        href="#"
-                        className="text-sm font-medium text-blue-600 hover:underline"
-                      >
-                        {amendment.title}
-                      </a>
-                    </td>
-                    <td className="px-6 py-4 text-sm text-slate-600">
-                      {amendment.type}
-                    </td>
-                    <td className="px-6 py-4">
-                      <StatusBadge status={amendment.status} />
-                    </td>
-                    <td className="px-6 py-4 text-sm text-slate-600">
-                      {amendment.effectiveDate}
-                    </td>
-                    <td className="px-6 py-4 text-sm text-slate-600">
-                      {amendment.lastUpdated}
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-2">
-                        <button className="p-1.5 text-slate-500 hover:text-slate-700 hover:bg-slate-100 rounded transition-colors">
-                          <Eye className="h-4 w-4" />
-                        </button>
-                        <button className="p-1.5 text-slate-500 hover:text-slate-700 hover:bg-slate-100 rounded transition-colors">
-                          <Pencil className="h-4 w-4" />
-                        </button>
-                        <button className="p-1.5 text-slate-500 hover:text-slate-700 hover:bg-slate-100 rounded transition-colors">
-                          <MoreHorizontal className="h-4 w-4" />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+        <ActionBar>
+          <Search
+            searchBarPlaceholder="Search contracts..."
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+          />
 
-          {/* Pagination */}
-          <div className="flex items-center justify-between px-6 py-4 border-t border-slate-200 bg-white">
-            <span className="text-sm text-slate-600">
-              Showing 1 to 4 of 4 entries
-            </span>
-            <div className="flex items-center gap-1">
-              <Button
-                variant="outline"
-                size="sm"
-                className="text-slate-600 border-slate-300"
-                disabled
-              >
-                Previous
-              </Button>
-              <Button
-                size="sm"
-                className="bg-[#1e3a5f] hover:bg-[#152a45] text-white min-w-[32px]"
-              >
-                1
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                className="text-slate-600 border-slate-300"
-                disabled
-              >
-                Next
-              </Button>
-            </div>
-          </div>
-        </Card>
+          <AddAction
+            addActionName="New Amendment"
+            viewMode={viewMode}
+            setViewMode={setViewMode}
+            setAddFormOpen={setFormOpen}
+            setSelectedEntity={setEditEntity}
+          ></AddAction>
+        </ActionBar>
+        <Table tableHeads={tableHeads}></Table>
       </div>
     </div>
   );
