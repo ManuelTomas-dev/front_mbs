@@ -169,7 +169,7 @@ const moduleCategories: NavItem[] = [
         title: "Procurement",
         //icon: Briefcase,
         items: [
-          { title: "Requests", href: "#/procurement/requests" },
+          { title: "Requests", href: "/procurement/requests" },
           {
             title: "Inventory",
             items: [

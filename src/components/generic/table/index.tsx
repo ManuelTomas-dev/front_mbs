@@ -20,6 +20,7 @@ interface TableProps<T extends BaseData> {
   setSelectedItem?: (value: any) => void;
   setDeleteDialog?: (value: boolean) => void;
   children?: React.ReactNode;
+  style?: string;
 }
 
 function Table<T extends BaseData>({
@@ -28,12 +29,13 @@ function Table<T extends BaseData>({
   setSelectedItem,
   setDeleteDialog,
   children,
+  style,
 }: TableProps<T>) {
   const firstItem = data?.[0] ?? {};
   const dataKeys = Object.keys(firstItem).filter((key) => key != "id");
 
   return (
-    <div className="rounded-md border mt-6">
+    <div className={`rounded-md border mt-6 ${style}`}>
       <TableComponent>
         <TableHeader>
           <TableRow>
