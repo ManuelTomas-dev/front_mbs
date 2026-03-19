@@ -58,8 +58,8 @@ const criteria = [
 
 export function GoNoGoDecision() {
   return (
-    <div className="min-h-screen bg-slate-100 p-6">
-      <div className="max-w-7xl mx-auto space-y-4">
+    <div className="p-6">
+      <div className="space-y-4">
         {/* Header */}
         <div className="flex items-center gap-2 text-slate-700">
           <CheckSquare className="h-5 w-5" />
@@ -91,7 +91,7 @@ export function GoNoGoDecision() {
           {/* Main Content */}
           <div className="col-span-8 space-y-4">
             {/* Go/No-Go Decision Card */}
-            <Card className="border-0 shadow-sm">
+            <Card className="border-0 shadow-sm bg-white">
               <CardHeader className="pb-2 border-b border-slate-100">
                 <CardTitle className="text-lg font-semibold text-slate-800">
                   Go / No-Go Decision
@@ -203,7 +203,7 @@ export function GoNoGoDecision() {
 
           {/* Sidebar - Decision */}
           <div className="col-span-4">
-            <Card className="border-0 shadow-sm">
+            <Card className="border-0 shadow-sm bg-white">
               <CardHeader className="pb-2">
                 <CardTitle className="text-lg font-semibold text-slate-800">
                   Decision
@@ -211,7 +211,7 @@ export function GoNoGoDecision() {
               </CardHeader>
               <CardContent className="space-y-4">
                 {/* GO Badge */}
-                <div className="bg-slate-100 rounded-lg p-4 text-center">
+                <div className="bg-green-50 rounded-lg  p-4 text-center">
                   <span className="text-2xl font-bold text-slate-700">GO</span>
                 </div>
 
