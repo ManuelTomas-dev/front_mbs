@@ -75,8 +75,8 @@ const stakeholders = [
 
 export function TenderOverview() {
   return (
-    <div className="min-h-screen bg-slate-100 p-6">
-      <div className="max-w-7xl mx-auto space-y-4">
+    <div className="p-6">
+      <div className="space-y-4">
         {/* Header */}
         <div className="flex items-center gap-2 text-slate-700">
           <CheckSquare className="h-5 w-5" />
@@ -107,7 +107,7 @@ export function TenderOverview() {
           {/* Main Content */}
           <div className="col-span-9 space-y-4">
             {/* Stats Bar */}
-            <Card className="border-0 shadow-sm">
+            <Card className="border-0 shadow-sm bg-white">
               <CardContent className="p-4">
                 <div className="flex items-center justify-between">
                   {/* Company Logo */}
@@ -167,7 +167,7 @@ export function TenderOverview() {
               {/* Left Column */}
               <div className="space-y-4">
                 {/* Proposal Summary */}
-                <Card className="border-0 shadow-sm">
+                <Card className="border-0 shadow-sm bg-white">
                   <CardHeader className="pb-2">
                     <CardTitle className="text-base font-semibold text-slate-800">
                       Proposal Summary
@@ -187,7 +187,7 @@ export function TenderOverview() {
                 </Card>
 
                 {/* Requirements with Priority */}
-                <Card className="border-0 shadow-sm">
+                <Card className="border-0 shadow-sm bg-white">
                   <CardHeader className="pb-2">
                     <div className="flex items-center gap-2">
                       <CheckSquare className="h-4 w-4 text-slate-500" />
@@ -226,7 +226,7 @@ export function TenderOverview() {
               </div>
 
               {/* Right Column - Requirements Card */}
-              <Card className="border-0 shadow-sm">
+              <Card className="border-0 shadow-sm bg-white">
                 <CardHeader className="pb-2">
                   <div className="flex items-center gap-2">
                     <div className="p-1 bg-slate-100 rounded">
@@ -259,7 +259,7 @@ export function TenderOverview() {
 
           {/* Sidebar - Key Stakeholders */}
           <div className="col-span-3">
-            <Card className="border-0 shadow-sm">
+            <Card className="border-0 shadow-sm bg-white">
               <CardHeader className="pb-2">
                 <CardTitle className="text-base font-semibold text-slate-800">
                   Key Stakeholders
