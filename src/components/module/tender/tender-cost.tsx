@@ -16,9 +16,14 @@ export function TenderCosts() {
         description="Manage and view tender costs information in the MBS system."
       />
       <div className="grid grid-col-2 sm:grid-cols-1 md:grid-cols-4 lg:grid-cols-3 space-x-2">
-        <Table style="col-span-2" tableHeads={tableHeads}></Table>
+        <Table
+          style="col-span-2"
+          tableHeads={tableHeads}
+          addActions={false}
+        ></Table>
         <Table
           tableHeads={["Total BID Cost", "Expected Value", "Estimated BID ROI"]}
+          addActions={false}
         ></Table>
       </div>
     </Container>
