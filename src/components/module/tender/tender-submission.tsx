@@ -50,7 +50,7 @@ const checklistItems = [
 export function TenderSubmissionWorkflow() {
   return (
     <div className="bg-white p-6">
-      <div className="max-w-7xl mx-auto space-y-4">
+      <div className=" space-y-4">
         {/* Tabs */}
         <div className="flex gap-1 border-b border-slate-200 bg-white/50 rounded-t-lg">
           {tabs.map((tab, index) => (
