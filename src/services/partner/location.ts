@@ -2,6 +2,10 @@ import { api } from "@/lib/api"
 import { ILocation } from "@/types/partner/location"
 
 // Buscar todos os títulos
+export async function getAllLocations(): Promise<ILocation[]> {
+    const { data } = await api.get(`/locations`)
+    return data
+}
 export async function getLocations(id: string): Promise<ILocation[]> {
     const { data } = await api.get(`/client/location/client/${id}`)
     return data

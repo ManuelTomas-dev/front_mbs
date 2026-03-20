@@ -10,6 +10,8 @@ import { useState } from "react";
 import AddAction from "@/components/generic/add-action";
 import DialogForm from "@/components/module/crm/quotes/dialog-form";
 import DialogFormCopy from "@/components/module/crm/quotes/dialog-form copy";
+import { useQuote } from "@/hooks/crm/quote";
+import { QuoteModule } from "@/components/module/crm/quotes/quote-module";
 
 export default function Page() {
   type ViewMode = "table" | "cards" | "list";
@@ -18,6 +20,7 @@ export default function Page() {
   const [viewMode, setViewMode] = useState<ViewMode>("table");
   const [editEntity, setEditEntity] = useState({});
   const [detailsEntity, setDetailsEntity] = useState({});
+  const {isLoading,quotes}=useQuote();
 
   const [formOpen, setFormOpen] = useState(false);
 
@@ -53,7 +56,9 @@ export default function Page() {
         />
       </ActionBar>
 
-      <Table tableHeads={tableHeads}></Table>
+      {/* <Table  tableHeads={tableHeads}></Table> */}
+      <QuoteModule/>
+
 
       <DialogFormCopy onSubmitAction={(p) => alert(p)} open={formOpen} setOpen={setFormOpen} />
     </Container>

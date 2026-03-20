@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Download } from "lucide-react";
 import DialogForm from "@/components/module/crm/leads/dialog-form";
 import DialogDetails from "@/components/module/crm/leads/dialog-details";
+import { LeadModule } from "@/components/module/crm/leads/lead-module";
 
 export default function Page() {
   type ViewMode = "table" | "cards" | "list";
@@ -38,7 +39,8 @@ export default function Page() {
 
   return (
     <Container>
-      <Title
+
+      {/* <Title
         title="Leads"
         description="Manage and view Leads information in the MBS system."
       />
@@ -74,10 +76,11 @@ export default function Page() {
         tableHeads={tableHeads}
         setSelectedItem={setSelectedEntity}
         setDeleteDialog={setDeletedDialog}
-      ></Table>
+      ></Table> */}
 
-      <DialogForm setOpen={setFormOpen} open={formOpen} />
-      <DialogDetails setOpen={setOpenDetailsDialog} open={openDetailsDialog} />
+      {/* <DialogForm  setOpen={setFormOpen} open={formOpen} /> */}
+      {/* <DialogDetails setOpen={setOpenDetailsDialog} open={openDetailsDialog} /> */}
+      <LeadModule/>
     </Container>
   );
 }

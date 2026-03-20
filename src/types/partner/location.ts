@@ -1,7 +1,7 @@
 // export interface ILocation {
 //   id: string
 //   id_client: string
-//   designacao_localidade_cliente: string
+//   name: string
 //   endereco: string
 //   codigo_postal?: string
 //   cidade?: string
@@ -14,7 +14,7 @@
 // }
 
 export interface ILocation {
-  designacao_localidade_cliente: string;
+  name: string;
   endereco: string;
   id: string;
   id_client: string;

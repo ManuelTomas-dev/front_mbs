@@ -11,6 +11,7 @@ interface AuthState {
   getUserId: () => string | null
   login: (email: string, password: string) => Promise<boolean>
   logout: () => Promise<void>
+  setToken: (newToken: string) => void
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -84,6 +85,13 @@ export const useAuthStore = create<AuthState>()(
         const decoded: any = jwtDecode(token)
         const userId = decoded.sub // O Flask-JWT-Extended usa 'sub' para a identidade
         return userId
+      },
+
+      // Dentro do seu useAuthStore:
+      setToken: (newToken: string) => {
+        set({ token: newToken });
+        // Atualiza o cookie também para manter a persistência
+        document.cookie = `token=${newToken}; path=/; max-age=${60 * 60 * 24 * 7}; SameSite=Lax`;
       },
     }),
     {

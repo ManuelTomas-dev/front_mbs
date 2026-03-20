@@ -81,7 +81,7 @@ export function LocationModule({ clientId, onLocationSelect }: LocationModulePro
 
 
     const handleAction = (action: string, location: ILocation) => {
-        console.log(`[v0] ${action} action for location:`, location.designacao_localidade_cliente)
+        console.log(`[v0] ${action} action for location:`, location.name)
 
         switch (action) {
             case "view":
@@ -102,7 +102,7 @@ export function LocationModule({ clientId, onLocationSelect }: LocationModulePro
                 break;
             //   case "duplicate":
             //     createLocation({
-            //       designacao_localidade_cliente: `${location.designacao_localidade_cliente} (Cópia)`,
+            //       name: `${location.name} (Cópia)`,
             //       endereco: location.endereco,
             //       cidade: location.cidade,
             //     })
@@ -183,7 +183,7 @@ export function LocationModule({ clientId, onLocationSelect }: LocationModulePro
                     {filteredLocations.map((location) => (
                         <TableRow key={location.id}>
                             <TableCell className="font-medium">
-                                {location.designacao_localidade_cliente}
+                                {location.name}
                             </TableCell>
                             <TableCell>{location.endereco}</TableCell>
                             <TableCell>
@@ -208,7 +208,7 @@ export function LocationModule({ clientId, onLocationSelect }: LocationModulePro
                 <Card key={location.id}>
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-sm font-medium">
-                            {location.designacao_localidade_cliente}
+                            {location.name}
                         </CardTitle>
                         <ActionDropdown location={location} />
                     </CardHeader>
@@ -237,7 +237,7 @@ export function LocationModule({ clientId, onLocationSelect }: LocationModulePro
                     <CardContent className="flex items-center justify-between p-4">
                         <div className="flex-1 space-y-1">
                             <div className="flex items-center gap-3">
-                                <h3 className="font-medium">{location.designacao_localidade_cliente}</h3>
+                                <h3 className="font-medium">{location.name}</h3>
                                 <Badge variant={location.status_localizacao_cliente ? "default" : "secondary"}>
                                     {location.status_localizacao_cliente ? "Active" : "Inactive"}
                                 </Badge>
@@ -255,7 +255,7 @@ export function LocationModule({ clientId, onLocationSelect }: LocationModulePro
 
     const filteredLocations = locations.filter(
         (location) =>
-            location.designacao_localidade_cliente
+            location.name
                 .toLowerCase()
                 .includes(searchTerm.toLowerCase()) ||
             location.endereco.toLowerCase().includes(searchTerm.toLowerCase())
@@ -397,7 +397,7 @@ export function LocationModule({ clientId, onLocationSelect }: LocationModulePro
                     open={contactDialogOpen}
                     onOpenChange={setContactDialogOpen}
                     locationId={Number(selectedLocationForContact.id)}
-                    locationName={selectedLocationForContact.designacao_localidade_cliente}
+                    locationName={selectedLocationForContact.name}
                 />
             )}
 
@@ -407,7 +407,7 @@ export function LocationModule({ clientId, onLocationSelect }: LocationModulePro
                     open={listDialogOpen}
                     onOpenChange={setListDialogOpen}
                     locationId={Number(selectedLocationForList.id)}
-                    locationName={selectedLocationForList.designacao_localidade_cliente}
+                    locationName={selectedLocationForList.name}
                 />
             )}
         </div>

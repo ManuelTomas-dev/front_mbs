@@ -8,9 +8,10 @@ import Table from "@/components/generic/table";
 import Search from "@/components/generic/search";
 import { useState } from "react";
 import AddAction from "@/components/generic/add-action";
-import DialogForm from "@/components/module/contract/dialog-form";
+import { ContractCreateDialog } from "@/components/module/contract/dialog-form";
 import { Button } from "@/components/ui/button";
 import { Download } from "lucide-react";
+import { ContractModule } from "@/components/module/contract/contract-module";
 
 export default function Page() {
   type ViewMode = "table" | "cards" | "list";
@@ -35,7 +36,7 @@ export default function Page() {
 
   return (
     <Container>
-      <Title
+      {/* <Title
         title="Contracts"
         description="Manage and view contracts information in the MBS system."
       />
@@ -46,8 +47,8 @@ export default function Page() {
         <Card title="Closed Value" content="$12,500,00" />
         <Card title="Active Value" content="$28,000,00" />
         <Card title="Average Contract Value" content="$7,850,00" />
-      </CardContainer>
-
+      </CardContainer> */}
+      {/* 
       <ActionBar>
         <Search
           searchBarPlaceholder="Search contracts..."
@@ -66,11 +67,13 @@ export default function Page() {
             Export <Download />
           </Button>
         </AddAction>
-      </ActionBar>
+      </ActionBar> */}
 
-      <Table tableHeads={tableHeads}></Table>
+      {/* <Table tableHeads={tableHeads}></Table> */}
 
-      <DialogForm open={formOpen} setOpen={setFormOpen} />
+      {/* <DialogForm open={formOpen} setOpen={setFormOpen} /> */}
+
+       <ContractModule/>
     </Container>
   );
 }

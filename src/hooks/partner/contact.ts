@@ -1,10 +1,20 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { createContact, getContactsByLocation } from "@/services/partner/contact";
+import { createContact, getAllContacts, getContactsByLocation } from "@/services/partner/contact";
 import { IContact } from "@/types/partner/contact";
 
-export function useContact(locationId: number | string) {
+export function useContact(locationId?: number | string) {
 
     const queryClient = useQueryClient();
+    const {
+        data: allContacts = [],
+        error: allContactsError,
+        isLoading: allContactsLoading,
+        refetch: allContactsRefetch
+    } = useQuery<IContact[]>({
+        queryKey: ["contacts"],
+        queryFn: getAllContacts,
+        refetchInterval: 5000,
+    });
 
     const {
         data: contacts = [],
@@ -29,6 +39,7 @@ export function useContact(locationId: number | string) {
     return {
         // Dados e estados da Query
         contacts,
+        allContacts,
         error,
         isLoading,
         refetch,

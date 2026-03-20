@@ -54,6 +54,7 @@ import { useQuote } from "@/hooks/crm/quote";
 import { toast } from "sonner";
 
 interface DialogFormProps {
+  
   open: boolean;
   setOpen: (value: boolean) => void;
   onSubmitAction: (data: FormValues) => void; // Passando a lógica de salvar por prop
@@ -90,7 +91,7 @@ function DialogFormCopy({ open, setOpen, onSubmitAction }: DialogFormProps) {
 
   const { contacts } = useContact(watch("client_location_id"));
 
-  const { quotes, error, isLoading, refetch, createQuote } = useQuote();
+  const {  createQuote } = useQuote();
 
 
   const onSubmit = async (values: FormValues) => {
@@ -100,7 +101,7 @@ function DialogFormCopy({ open, setOpen, onSubmitAction }: DialogFormProps) {
         custo: 0,
         descricao: values.description || "",
         fk_cliente_contacto: Number(values.client_contact_id),
-        fk_moeda: Number(values.currency_id),
+        fk_moeda: 2,
         fk_usuario: 1,
         notas: values.notes || "",
         oportunidade_conversao: values.opportunity_id ? Number(values.opportunity_id) : 0,
@@ -113,7 +114,7 @@ function DialogFormCopy({ open, setOpen, onSubmitAction }: DialogFormProps) {
       form.reset(); // Limpa o formulário após sucesso
     } catch (err) {
       // O erro já é tratado no onError do useMutation, mas você pode capturar aqui também
-      console.error("Falha ao submeter:", err);
+      console.error("Error creating quote:", err);
     }
   };
 
@@ -176,7 +177,7 @@ function DialogFormCopy({ open, setOpen, onSubmitAction }: DialogFormProps) {
                             key={location.id}
                             value={String(location.id)}
                           >
-                            {location.designacao_localidade_cliente}
+                            {location.name}
                           </SelectItem>
                         ))}
                       </SelectGroup>

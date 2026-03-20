@@ -13,3 +13,8 @@ export async function getContactsByLocation(locationId: string | number): Promis
     const { data } = await api.get(`/client/contact/location/${locationId}`)
     return data
 }
+
+export async function getAllContacts(): Promise<IContact[]> {
+    const { data } = await api.get("/client/contact")
+    return data
+}

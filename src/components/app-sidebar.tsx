@@ -5,7 +5,7 @@ import { IconInnerShadowTop } from "@tabler/icons-react";
 
 import { Sidebar } from "@/components/ui/sidebar";
 
-import { ChevronDown } from "lucide-react";
+import { Bell, ChevronDown } from "lucide-react";
 import {
   Collapsible,
   CollapsibleContent,
@@ -15,6 +15,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { DropdownMenuDemo } from "./internal-ui/DropdownMenuDemo";
 import { useAuthStore } from "@/store/auth";
+import { Avatar } from "./ui/avatar";
+import { AvatarFallback } from "@radix-ui/react-avatar";
 
 type NavItem = {
   title: string;
@@ -32,11 +34,13 @@ const data = {
 };
 
 const moduleCategories: NavItem[] = [
+
   {
     title: "Home",
     //  //icon: Home,
     href: "/",
   },
+
   {
     title: "Dashboard",
     //icon: Building2,
@@ -99,8 +103,12 @@ const moduleCategories: NavItem[] = [
           { title: "SOC", href: "#/qhse/soc" },
           { title: "JSA", href: "#/qhse/jsa" },
           {
-            title: "Permetwork e Welding Work",
-            href: "#/qhse/permetwork-e-welding-work",
+            title: "Permetwork",
+            href: "#/qhse/permetwork",
+          },
+          {
+            title: "Welding Work",
+            href: "#/qhse/welding-work",
           },
           { title: "History", href: "#/qhse/history" },
           { title: "Audit", href: "#/qhse/audit" },
@@ -162,21 +170,8 @@ const moduleCategories: NavItem[] = [
 
           },
         ],
-      },
-      {
-        title: "QHSE",
-        //icon: Briefcase,
-        items: [
-          { title: "Non-Conformity", href: "#/qhse/non-conformity" },
-          { title: "Risk assessment", href: "#/qhse/risk-assessment" },
-          { title: "SOC", href: "#/qhse/soc" },
-          { title: "JSA", href: "#/qhse/jsa" },
-          { title: "Permetwork", href: "#/qhse/permetwork-e-welding-work" },
-          { title: " Welding Work", href: "#/qhse/permetwork-e-welding-work" },
-          { title: "History", href: "#/qhse/history" },
-          { title: "Audit", href: "#/qhse/audit" },]
+      }
 
-      },
     ],
   },
 
@@ -192,8 +187,8 @@ const moduleCategories: NavItem[] = [
 
           {
             title: "Purchase Orders", items: [
-              { title: "Quotations", href: "#/procurement/inventory/inventory-management" },
-              { title: "RF Aproval", href: "#/procurement/inventory/inventory-management" },
+              { title: "Quotations", href: "/procurement/purchase-orders/quotations" },
+              { title: "RF Aproval", href: "/procurement/purchase-orders/rf-approval" },
               { title: "P O", href: "#/procurement/inventory/inventory-management" },
 
             ]
@@ -203,7 +198,7 @@ const moduleCategories: NavItem[] = [
             items: [
               {
                 title: "PPE",
-                href: "#/procurement/inventory/inventory-management",
+                href: "/procurement/inventory",
               },
               {
                 title: "Tools",
@@ -375,8 +370,6 @@ const moduleCategories: NavItem[] = [
           },
         ],
       },
-
-
     ],
   },
 
@@ -391,8 +384,6 @@ const moduleCategories: NavItem[] = [
 
         ]
       },
-      //     { title: "Purchase Orders", href: "#/contract/purchase-orders" },
-      //     { title: "Work Location", href: "#/contract/work-location" },
       {
         title: "Supplier Management", items: [
           { title: "Supplier List", href: "/partner/supplier" },
@@ -457,7 +448,7 @@ export function CategorizedMenuNavigation({
               className="group/collapsible relative"
             >
               <CollapsibleTrigger asChild>
-                <button className="flex items-center gap-2 rounded-full px-3 py-2 text-sm font-medium hover:bg-accent transition-colors">
+                <button className="flex items-center gap-2 rounded-full px-3 py-2 sm:text-xs font-medium hover:bg-accent transition-colors">
                   {/* {item.icon && <item.icon className="size-4" />} */}
                   <span>{item.title}</span>
                   {hasChildren && (
@@ -469,7 +460,7 @@ export function CategorizedMenuNavigation({
               {hasChildren ? (
                 /* Menu flutuante (Dropdown) */
                 <CollapsibleContent className="absolute left-0 top-full mt-1 z-50">
-                  <div className="w-80 rounded-md border bg-background shadow-lg overflow-hidden flex flex-col">
+                  <div className="w-80 rounded-md border bg-background shadow-lg overflow-hidden flex flex-col sm:text-xs ">
                     <CategorizedMenuNavigation
                       items={item.items!}
                       level={level + 1}
@@ -515,9 +506,8 @@ export function CategorizedMenuNavigation({
           <Link
             key={item.title}
             href={item.href || "#"}
-            className={`flex items-center gap-2 px-8 py-2 text-xs transition-colors border-b last:border-b-0 ${
-              isActive ? "bg-primary text-white" : "hover:bg-accent"
-            }`}
+            className={`flex items-center gap-2 px-8 py-2 text-xs transition-colors border-b last:border-b-0 ${isActive ? "bg-primary text-white" : "hover:bg-accent"
+              }`}
           >
             {/* {item.icon && <item.icon className="size-4" />} */}
             {item.title}
@@ -532,12 +522,24 @@ export function CategorizedMenuNavigation({
 function NavUserHorizontal({ user }: { user: any }) {
   const { user: useLoggedUser } = useAuthStore();
   return (
-    <div className="ml-auto flex items-center gap-2 border-l border-border pl-2 cursor-pointer">
-      <img
+    <div className="flex items-center gap- border-l border-border pl-2 cursor-pointer ml-2">
+      <button className="relative text-gray-600 hover:text-gray-900 mr-2">
+        <div className="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white font-bold">
+          9
+        </div>
+        <Bell size={20} />
+      </button>
+      <Avatar className="bg-blue-200">
+        <AvatarFallback  className="flex items-center justify-center">
+        <span>
+           {useLoggedUser.first_name[0]}{useLoggedUser.last_name[0]}</span>
+        </AvatarFallback>
+      </Avatar>
+      {/* <img
         src={"https://media.licdn.com/dms/image/v2/D4E03AQF8nQkA6jIcSw/profile-displayphoto-crop_800_800/B4EZy.O2gOIEAI-/0/1772718090751?e=1775088000&v=beta&t=Vwqb-VFe25RUiY4kl17b-CW4NUFQB6Y46166aPUXMAo"}
         alt={useLoggedUser.first_name}
         className="size-8 rounded-full"
-      />
+      /> */}
       <div className="hidden flex-col sm:flex">
         <p className="text-xs font-medium">{useLoggedUser.first_name} {useLoggedUser.last_name}</p>
         <p className="text-xs text-muted-foreground">{useLoggedUser.work_email}</p>
@@ -545,3 +547,5 @@ function NavUserHorizontal({ user }: { user: any }) {
     </div>
   );
 }
+
+

@@ -1,4 +1,5 @@
 export interface IQuote {
+  id?: number;
   codigo_quotacao: string;
   fk_cliente_contacto: number;
   fk_moeda: number;
@@ -9,4 +10,5 @@ export interface IQuote {
   status_quote: string;
   custo: number;
   termos_condicoes?: string;
+  is_active?: boolean;
 }

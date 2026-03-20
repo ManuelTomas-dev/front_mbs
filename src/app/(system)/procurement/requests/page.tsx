@@ -51,7 +51,19 @@ export default function Page() {
         </ViewOptions>
       </ActionBar>
 
-      <Table tableHeads={tableHeads}></Table>
+      <Table tableHeads={tableHeads}>
+        <tbody>
+          <tr>
+            <td>RF-0001</td>
+            <td>RF-0001</td>
+            <td>RF-0001</td>
+            <td>RF-0001</td>
+            <td>RF-0001</td>
+            <td>RF-0001</td>
+          </tr>
+        </tbody>
+
+      </Table>
 
       <DialogForm open={formOpen} setOpen={setFormOpen} />
       <SaveDraftSection status="Pending" count={0} />

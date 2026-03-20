@@ -1,220 +1,334 @@
+"use client";
+
+import React from "react";
+import z from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
+
 import DialogContainer from "@/components/generic/dialog-container";
 import { Button } from "@/components/ui/button";
-import { Field, FieldLabel, FieldGroup } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { DialogFooter } from "@/components/ui/dialog";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import {
   Select,
   SelectContent,
-  SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Calendar } from "@/components/ui/calendar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { Textarea } from "@/components/ui/textarea";
-import { Slider } from "@/components/ui/slider";
-import { DialogFooter } from "@/components/ui/dialog";
 
-interface DialogFormProps {
+// Hooks (Ajuste os nomes conforme seu projeto)
+import { useContract } from "@/hooks/crm/contract";
+import { useLocation } from "@/hooks/partner/location";
+import { useQuote } from "@/hooks/crm/quote";
+import { useContact } from "@/hooks/partner/contact";
+import { useAuthStore } from "@/store/auth";
+
+const contractSchema = z.object({
+  contrato_numero: z.string().min(1, "O número do contrato é obrigatório"),
+  fk_localizacao: z.string().min(1, "Selecione a localização"),
+  fk_quotas: z.string().min(1, "Vincule a uma quota"),
+  fk_cliente_contacto: z.string().min(1, "Selecione o contato"),
+  fk_local_trabalho: z.string().min(1, "Selecione o local de trabalho").optional(),
+  descricao_contrato: z.string().min(5, "A descrição deve ser mais detalhada"),
+  contrato_inicio: z.string().min(1, "Data de início obrigatória"),
+  contrato_fim: z.string().min(1, "Data de fim obrigatória"),
+  valor_estimado: z.string().min(1, "Informe o valor"),
+  fk_tipo_contrato: z.string().min(1, "Selecione o tipo").optional(),
+  prazo_renovacao: z.string().min(1, "Informe o prazo"),
+  fk_produte_line: z.string().min(1, "Selecione a linha de produto").optional(),
+  referencia_contrato: z.string().optional(),
+});
+
+type ContractFormValues = z.infer<typeof contractSchema>;
+
+interface ContractDialogProps {
   open: boolean;
   setOpen: (value: boolean) => void;
 }
 
-function DialogForm({ open, setOpen }: DialogFormProps) {
+export function ContractCreateDialog({ open, setOpen }: ContractDialogProps) {
+  const { createContract } = useContract();
+  const { allLocations } = useLocation();
+  const { quotes } = useQuote();
+  const { allContacts } = useContact();
+  const { getUserId } = useAuthStore();
+
+  const form = useForm<ContractFormValues>({
+    resolver: zodResolver(contractSchema),
+    defaultValues: {
+      contrato_numero: `CTR-${new Date().getFullYear()}-00${Math.floor(Math.random() * 10)}`,
+      status_contrato: "Open",
+      fk_usuario: "1",
+    } as any,
+  });
+
+  {
+    const {
+      formState: { errors },
+    } = form;
+  }
+
+  const onSubmit = async (values: ContractFormValues) => {
+    try {
+      await createContract({
+        ...values,
+        fk_localizacao: Number(values.fk_localizacao),
+        fk_quotas: Number(values.fk_quotas),
+        fk_cliente_contacto: Number(values.fk_cliente_contacto),
+        fk_local_trabalho: 1,
+        fk_tipo_contrato: 1,
+        fk_produte_line: 1,
+        prazo_renovacao: Number(values.prazo_renovacao),
+        arquivado: false,
+        fk_usuario: Number(getUserId()),
+        contrato_fim: new Date(values.contrato_fim).toISOString(),
+        contrato_inicio: new Date(values.contrato_inicio).toISOString(),
+        status_contrato: "Open",
+        contrato_numero: `CTR-${new Date().getFullYear()}-00${Math.floor(Math.random() * 10)}`,
+        descricao_contrato: values.descricao_contrato,
+        referencia_contrato: values.referencia_contrato!,
+        valor_estimado: Number(values.valor_estimado!),
+      });
+
+      toast.success("Contrato criado com sucesso!");
+      setOpen(false);
+      form.reset();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <DialogContainer
+      className="sm:max-w-2xl" // Aumentado para comportar melhor o grid duplo
       open={open}
       setOpen={setOpen}
-      title="Contract"
-      description="Create a new Contract in the MBS system."
+      title="Novo Contrato"
+      description="Preencha os detalhes para gerar o contrato de prestação de serviços."
     >
-      <form>
-        <div className="grid grid-cols-3 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          <Field>
-            <FieldLabel>Client:</FieldLabel>
-            <Select>
-              <SelectTrigger>
-                <SelectValue placeholder="Select a client" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup></SelectGroup>
-              </SelectContent>
-            </Select>
-          </Field>
+      <Form {...form}>
+        {JSON.stringify(form.formState.errors)}
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
 
-          <Field>
-            <FieldLabel>Client Location:</FieldLabel>
-            <Select>
-              <SelectTrigger>
-                <SelectValue placeholder="Select a client location" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup></SelectGroup>
-              </SelectContent>
-            </Select>
-          </Field>
-
-          <Field>
-            <FieldLabel>Client Contact:</FieldLabel>
-            <Select>
-              <SelectTrigger>
-                <SelectValue placeholder="Select a client contact" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup></SelectGroup>
-              </SelectContent>
-            </Select>
-          </Field>
-
-          <Field>
-            <FieldLabel>Work Location:</FieldLabel>
-            <Select>
-              <SelectTrigger>
-                <SelectValue placeholder="Select a work location" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup></SelectGroup>
-              </SelectContent>
-            </Select>
-          </Field>
-
-          <Field>
-            <FieldLabel>Expected Start:</FieldLabel>
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  variant="outline"
-                  className="w-53 justify-between text-left font-normal data-[empty=true]:text-muted-foreground"
-                >
-                  <span>Pick a date</span>
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0" align="start">
-                <Calendar mode="single" />
-              </PopoverContent>
-            </Popover>
-          </Field>
-
-          <Field>
-            <FieldLabel>Expected End:</FieldLabel>
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  variant="outline"
-                  className="w-53 justify-between text-left font-normal data-[empty=true]:text-muted-foreground"
-                >
-                  <span>Pick a date</span>
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0" align="start">
-                <Calendar mode="single" />
-              </PopoverContent>
-            </Popover>
-          </Field>
-
-          <Field>
-            <FieldLabel>Quote:</FieldLabel>
-            <Select>
-              <SelectTrigger>
-                <SelectValue placeholder="Select a quotation" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup></SelectGroup>
-              </SelectContent>
-            </Select>
-          </Field>
-
-          <Field className="col-span-2">
-            <FieldLabel>Estimated Value:</FieldLabel>
-            <Input
-              type="number"
-              min={0}
-              placeholder="Introduce the contract estimated value"
+          {/* SEÇÃO 1: Identificação */}
+          <div className="grid grid-cols-2 gap-4">
+            <FormField
+              control={form.control}
+              name="contrato_numero"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-blue-600 font-semibold">Nº do Contrato</FormLabel>
+                  <FormControl><Input {...field} className="bg-slate-50" /></FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-          </Field>
+            <FormField
+              control={form.control}
+              name="referencia_contrato"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Referência Externa</FormLabel>
+                  <FormControl><Input placeholder="REF-..." {...field} /></FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
 
-          <Field>
-            <FieldLabel>Location:</FieldLabel>
-            <Select>
-              <SelectTrigger>
-                <SelectValue placeholder="Select a location" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup></SelectGroup>
-              </SelectContent>
-            </Select>
-          </Field>
+          {/* SEÇÃO 2: Datas e Prazos */}
+          <div className="p-4 border rounded-lg bg-slate-50/50 grid grid-cols-3 gap-4">
+            <FormField
+              control={form.control}
+              name="contrato_inicio"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Início</FormLabel>
+                  <FormControl><Input type="date" {...field} /></FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="contrato_fim"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Fim</FormLabel>
+                  <FormControl><Input type="date" {...field} /></FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="prazo_renovacao"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Renovação (Meses)</FormLabel>
+                  <FormControl><Input type="number" {...field} /></FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
 
-          <Field>
-            <FieldLabel>Product Line:</FieldLabel>
-            <Select>
-              <SelectTrigger>
-                <SelectValue placeholder="Select a product line" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup></SelectGroup>
-              </SelectContent>
-            </Select>
-          </Field>
+          {/* SEÇÃO 3: Financeiro e Classificação */}
+          <div className="grid grid-cols-2 gap-4">
+            <FormField
+              control={form.control}
+              name="valor_estimado"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Valor Estimado</FormLabel>
+                  <FormControl>
+                    <div className="relative">
+                      <span className="absolute left-3 top-2.5 text-slate-400 text-sm">AOA</span>
+                      <Input className="pl-12" placeholder="0,00" {...field} />
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="fk_produte_line"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Linha de Produto</FormLabel>
+                  <Select onValueChange={field.onChange}>
+                    <FormControl><SelectTrigger className="w-full"><SelectValue placeholder="Selecione..." /></SelectTrigger></FormControl>
+                    <SelectContent>
+                      <SelectItem value="1">Hardware</SelectItem>
+                      <SelectItem value="2">Software / Licenciamento</SelectItem>
+                      <SelectItem value="3">Manutenção</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
 
-          <Field>
-            <FieldLabel>Renewal Option:</FieldLabel>
-            <Select>
-              <SelectTrigger>
-                <SelectValue placeholder="Select a renewal option" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup></SelectGroup>
-              </SelectContent>
-            </Select>
-          </Field>
-        </div>
+          <div className="grid grid-cols-2 gap-4">
+            <FormField
+              control={form.control}
+              name="fk_localizacao"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Location</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value} // Adicione isso para o valor aparecer quando editado
+                  >
+                    <FormControl>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Selecione..." />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {allLocations?.map((location) => (
+                        <SelectItem
+                          key={location.id} // Key essencial aqui
+                          value={String(location.id)} // Converte ID para string
+                        >
+                          {location.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="fk_cliente_contacto"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Client Contact</FormLabel>
+                  <Select onValueChange={field.onChange}>
+                    <FormControl><SelectTrigger className="w-full"><SelectValue placeholder="Selecione..." /></SelectTrigger></FormControl>
+                    <SelectContent>
+                      {allContacts.map((contact) => (
+                        <SelectItem value={contact.id.toString()}>{contact.nome_contato}</SelectItem>
+                      ))}
 
-        <div className="grid grid-cols-2 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-5 mt-6">
-          <Field>
-            <FieldLabel>Contract Reference:</FieldLabel>
-            <Input type="text" />
-          </Field>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
 
-          <Field>
-            <FieldLabel>Contract Type:</FieldLabel>
-            <Select>
-              <SelectTrigger>
-                <SelectValue placeholder="Select a contract type" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup></SelectGroup>
-              </SelectContent>
-            </Select>
-          </Field>
-        </div>
+          {/* SEÇÃO 4: Descrição */}
+          <div className="grid grid-cols-2 gap-4">
+            <FormField
+              control={form.control}
+              name="fk_quotas"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Quote</FormLabel>
+                  <Select onValueChange={field.onChange}>
+                    <FormControl><SelectTrigger className="w-full"><SelectValue placeholder="Selecione..." /></SelectTrigger></FormControl>
+                    <SelectContent>
+                      {quotes.map((quote) => (
+                        <SelectItem value={quote.id?.toString() || ""}>REF-{quote.custo}</SelectItem>
+                      ))}
 
-        <Field className="mt-6">
-          <FieldLabel>Details:</FieldLabel>
-          <Textarea placeholder="Introduce the details here..." />
-        </Field>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="descricao_contrato"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Objeto do Contrato (Descrição)</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder="Descreva os serviços ou escopo do contrato..."
+                      className="min-h-25 resize-none"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
 
-        <DialogFooter className="mt-6">
-          <Button type="button">Save</Button>
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => {
-              setOpen(false);
-            }}
-          >
-            Cancel
-          </Button>
-        </DialogFooter>
-      </form>
+
+          <DialogFooter className="border-t pt-6">
+            <Button type="button" variant="ghost" onClick={() => setOpen(false)}>
+              Descartar
+            </Button>
+            <Button
+              type="submit"
+              className="bg-blue-700 hover:bg-blue-800 text-white px-8"
+              disabled={form.formState.isSubmitting}
+            >
+              {form.formState.isSubmitting ? "Processando..." : "Finalizar Contrato"}
+            </Button>
+          </DialogFooter>
+        </form>
+      </Form>
     </DialogContainer>
   );
 }
-
-export default DialogForm;

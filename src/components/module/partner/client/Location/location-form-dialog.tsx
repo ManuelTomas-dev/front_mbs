@@ -39,7 +39,7 @@ export function LocationFormDialog({
     } else {
       setFormData({
         id_client: clientId,
-        designacao_localidade_cliente: "",
+        name: "",
         endereco: "",
       })
     }
@@ -76,11 +76,11 @@ export function LocationFormDialog({
               <Label htmlFor="name">Location Name *</Label>
               <Input
                 id="name"
-                value={formData.designacao_localidade_cliente || ""}
+                value={formData.name || ""}
                 onChange={(e) =>
                   setFormData({
                     ...formData,
-                    designacao_localidade_cliente: e.target.value,
+                    name: e.target.value,
                   })
                 }
                 placeholder="Enter location name"

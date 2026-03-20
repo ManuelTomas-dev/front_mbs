@@ -1,11 +1,24 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { IClient } from "@/types/partnercopy/client";
 import { ILocation } from "@/types/partner/location"
-import { createLocation, getLocations, updateLocation } from "@/services/partner/location";
+import { createLocation, getAllLocations, getLocations, updateLocation } from "@/services/partner/location";
 
 export function useLocation(clientId?: string) {
 
   const queryClient = useQueryClient();
+
+
+
+  const {
+    data: allLocations = [],
+    error: allLocationsError,
+    isLoading: allLocationsLoading,
+    refetch: allLocationsRefetch
+  } = useQuery<ILocation[]>({
+    queryKey: ["locations"],
+    queryFn: getAllLocations,
+    refetchInterval: 5000,
+  });
 
   const {
     data: locations = [],
@@ -47,6 +60,7 @@ export function useLocation(clientId?: string) {
   return {
     // Dados e estados da Query
     locations,
+    allLocations,
     error,
     isLoading,
     refetch,
