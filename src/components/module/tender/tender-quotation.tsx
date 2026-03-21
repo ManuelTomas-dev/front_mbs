@@ -12,7 +12,7 @@ import CardContainer from "@/components/generic/card-container";
 import Card from "@/components/generic/card";
 import Table from "@/components/generic/table";
 import ActionBar from "@/components/generic/action-bar";
-import DialogForm from "../contract/dialog-form";
+// import DialogForm from "../contract/dialog-form";
 import Search from "@/components/generic/search";
 import AddAction from "@/components/generic/add-action";
 
@@ -25,6 +25,7 @@ import {
   Calendar,
   ChevronDown,
 } from "lucide-react";
+import DialogForm from "../crm/enquiry/dialog-form";
 
 const statsCards = [
   {

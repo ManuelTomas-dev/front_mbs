@@ -6,10 +6,10 @@ import Table from "@/components/generic/table";
 import Search from "@/components/generic/search";
 import { useState } from "react";
 import ViewOptions from "@/components/generic/view-options";
-import DialogForm from "@/components/module/contract/dialog-form";
 import { Button } from "@/components/ui/button";
 import { Download } from "lucide-react";
 import SaveDraftSection from "@/components/module/procurement/requests/save-draft-section";
+import DialogForm from "@/components/module/crm/enquiry/dialog-form";
 
 export default function Page() {
   type ViewMode = "table" | "cards" | "list";

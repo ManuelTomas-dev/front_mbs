@@ -532,7 +532,7 @@ function NavUserHorizontal({ user }: { user: any }) {
       <Avatar className="bg-blue-200">
         <AvatarFallback  className="flex items-center justify-center">
         <span>
-           {useLoggedUser.first_name[0]}{useLoggedUser.last_name[0]}</span>
+           {useLoggedUser?.first_name[0]}{useLoggedUser?.last_name[0]}</span>
         </AvatarFallback>
       </Avatar>
       {/* <img
@@ -541,8 +541,8 @@ function NavUserHorizontal({ user }: { user: any }) {
         className="size-8 rounded-full"
       /> */}
       <div className="hidden flex-col sm:flex">
-        <p className="text-xs font-medium">{useLoggedUser.first_name} {useLoggedUser.last_name}</p>
-        <p className="text-xs text-muted-foreground">{useLoggedUser.work_email}</p>
+        <p className="text-xs font-medium">{useLoggedUser?.first_name} {useLoggedUser?.last_name}</p>
+        <p className="text-xs text-muted-foreground">{useLoggedUser?.work_email}</p>
       </div>
     </div>
   );

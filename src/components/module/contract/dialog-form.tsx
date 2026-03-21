@@ -33,6 +33,8 @@ import { useLocation } from "@/hooks/partner/location";
 import { useQuote } from "@/hooks/crm/quote";
 import { useContact } from "@/hooks/partner/contact";
 import { useAuthStore } from "@/store/auth";
+
+
 const contractSchema = z.object({
   contrato_numero: z.string().min(1, "Contract number is required"),
   fk_localizacao: z.string().min(1, "Select a location"),
