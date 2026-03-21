@@ -33,7 +33,7 @@ import { ILeadData } from "@/types/crm/leads";
 import { useLeadActivity } from "@/hooks/crm/leadsActivity";
 
 const activitySchema = z.object({
-  description: z.string().min(3, "Descreva a atividade"),
+  description: z.string().min(3, "Description must be at least 3 characters"),
   stackholder_no_user: z.string().optional(),
   id_type_activity: z.string().default("1"),
 });

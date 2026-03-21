@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import React, { useState } from "react"
 import {
     Search,
     Filter,
@@ -94,6 +94,31 @@ export function ContractModule() {
         setInvoiceOpen(true);
     };
 
+    // Carregar dados globais para a Sidebar ao montar o componente
+    React.useEffect(() => {
+        const fetchGlobalActivity = async () => {
+            setLoadingInvoices(true);
+            setLoadingAmendments(true);
+            try {
+                // Busca todas as invoices e amendments sem filtrar por contrato específico
+                const [invoicesRes, amendmentsRes] = await Promise.all([
+                    api.get(`/contract/invoice`),
+                    api.get(`/contract/amendment`)
+                ]);
+
+                setInvoices(invoicesRes.data);
+                setAmendments(amendmentsRes.data);
+            } catch (error) {
+                console.error("Erro ao carregar atividade recente:", error);
+            } finally {
+                setLoadingInvoices(false);
+                setLoadingAmendments(false);
+            }
+        };
+
+        fetchGlobalActivity();
+    }, []);
+
     const handleOpenInvoices = async (contract: IContract) => {
         setSelectedContract(contract);
         setIsSheetOpen(true);
@@ -154,12 +179,12 @@ export function ContractModule() {
             <TableComponent>
                 <TableHeader className="bg-bluetext-blue-50050">
                     <TableRow>
-                        <TableHead className="font-bold">Nº Contrato</TableHead>
-                        <TableHead className="font-bold">Descrição</TableHead>
-                        <TableHead className="font-bold">Vigência</TableHead>
-                        <TableHead className="font-bold">Valor Est.</TableHead>
+                        <TableHead className="font-bold">Number</TableHead>
+                        <TableHead className="font-bold">Description</TableHead>
+                        <TableHead className="font-bold">Vigence</TableHead>
+                        <TableHead className="font-bold">Value Est.</TableHead>
                         <TableHead className="font-bold">Status</TableHead>
-                        <TableHead className="text-right">Ações</TableHead>
+                        <TableHead className="text-right">Actions</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -198,23 +223,20 @@ export function ContractModule() {
                                             <Button variant="ghost" size="icon"><MoreHorizontal className="h-4 w-4" /></Button>
                                         </DropdownMenuTrigger>
                                         <DropdownMenuContent align="end">
-                                            <DropdownMenuItem><Eye className="mr-2 h-4 w-4" /> Detalhes</DropdownMenuItem>
-                                            <DropdownMenuItem><Edit className="mr-2 h-4 w-4" /> Editar</DropdownMenuItem>
+                                            <DropdownMenuItem><Eye className="mr-2 h-4 w-4" /> Details</DropdownMenuItem>
+                                            <DropdownMenuItem><Edit className="mr-2 h-4 w-4" /> Edit</DropdownMenuItem>
                                             <DropdownMenuItem onClick={() => handleInvoiceAction(contract)}>
-                                                <FileText className="mr-2 h-4 w-4" /> Registrar Invoice
+                                                <FileText className="mr-2 h-4 w-4" /> Register Invoice
                                             </DropdownMenuItem>
                                             <DropdownMenuItem onClick={() => handleOpenInvoices(contract)}>
-                                                <Eye className="mr-2 h-4 w-4 text-blue-600" /> Ver Faturamento
-                                            </DropdownMenuItem>
+                                                <Eye className="mr-2 h-4 w-4 text-blue-600" /> View Invoices</DropdownMenuItem>
                                             <DropdownMenuSeparator />
                                             <DropdownMenuItem onClick={() => handleAmendmentAction(contract)}>
-                                                <FileText className="mr-2 h-4 w-4" /> Register Amendment
-                                            </DropdownMenuItem>
+                                                <FileText className="mr-2 h-4 w-4" /> Register Amendment</DropdownMenuItem>
                                             <DropdownMenuItem onClick={() => handleOpenAmendments(contract)}>
-                                                <History className="mr-2 h-4 w-4 text-blue-600" /> Ver Aditivos
-                                            </DropdownMenuItem>
+                                                <History className="mr-2 h-4 w-4 text-blue-600" /> View Amendments</DropdownMenuItem>
                                             <DropdownMenuSeparator />
-                                            <DropdownMenuItem className="text-red-600"><Trash2 className="mr-2 h-4 w-4" /> Eliminar</DropdownMenuItem>
+                                            <DropdownMenuItem className="text-red-600"><Trash2 className="mr-2 h-4 w-4" /> Delete</DropdownMenuItem>
                                         </DropdownMenuContent>
                                     </DropdownMenu>
                                 </TableCell>
@@ -223,7 +245,7 @@ export function ContractModule() {
                     ) : (
                         <TableRow>
                             <TableCell colSpan={6} className="h-24 text-center text-muted-foreground">
-                                Nenhum contrato encontrado para este lead.
+                                No contracts found for this lead.
                             </TableCell>
                         </TableRow>
                     )}
@@ -238,11 +260,11 @@ export function ContractModule() {
         <div className="space-y-6 container mx-auto py-6">
             <div className="flex justify-between items-end">
                 <div>
-                    <h2 className="text-3xl font-bold tracking-tight text-blue-500">Contratos</h2>
-                    <p className="text-muted-foreground">Gerencie acordos, renovações e valores contratuais.</p>
+                    <h2 className="text-3xl font-bold tracking-tight text-blue-500">Contracts</h2>
+                    <p className="text-muted-foreground">Manage agreements, renewals and contractual values.</p>
                 </div>
                 <Button onClick={() => setFormOpen(true)} className="bg-blue-700 hover:bg-blue-800 shadow-md">
-                    <Plus className="mr-2 h-4 w-4" /> Novo Contrato
+                    <Plus className="mr-2 h-4 w-4" /> New Contract
                 </Button>
             </div>
 
@@ -251,7 +273,7 @@ export function ContractModule() {
                 {/* Card: Contratos Ativos */}
                 <Card>
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">  Contratos Ativos</CardTitle>
+                        <CardTitle className="text-sm font-medium">Active Contracts</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <div className="text-2xl font-bold">{stats.active}</div>
@@ -259,7 +281,7 @@ export function ContractModule() {
                 </Card>
                 <Card>
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">  Valor Acumulado</CardTitle>
+                        <CardTitle className="text-sm font-medium">Acumulated Value</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <div className="text-2xl font-bold">  {Number(stats.totalValue).toLocaleString('pt-AO', { style: 'currency', currency: 'AOA' })}</div>
@@ -268,7 +290,7 @@ export function ContractModule() {
 
                 <Card>
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">     Arquivados</CardTitle>
+                        <CardTitle className="text-sm font-medium">Archived</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <div className="text-2xl font-bold">   {stats.archived}</div>
@@ -276,7 +298,7 @@ export function ContractModule() {
                 </Card>
                 <Card>
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">     Ticket Médio</CardTitle>
+                        <CardTitle className="text-sm font-medium">Ticket Median</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <div className="text-2xl font-bold">                              {(stats.totalValue / (stats.total || 1)).toLocaleString('pt-AO', { style: 'currency', currency: 'AOA' })}
@@ -292,13 +314,13 @@ export function ContractModule() {
                     <div className="relative w-full max-w-sm">
                         <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                         <Input
-                            placeholder="Buscar por número ou descrição..."
+                            placeholder="Search by number or description..."
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                             className="pl-8"
                         />
                     </div>
-                    <Button variant="outline" size="sm"><Filter className="mr-2 h-4 w-4" /> Filtros</Button>
+                    <Button variant="outline" size="sm"><Filter className="mr-2 h-4 w-4" /> Filters</Button>
                 </div>
                 <div className="flex items-center bg-bluetext-blue-500 p-1 rounded-lg">
                     <Button

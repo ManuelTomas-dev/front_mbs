@@ -89,7 +89,7 @@ export function QuoteModule() {
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => handleAction("add-service", quote)}>
                     <Map className="mr-2 h-4 w-4" />
-                    Add Services
+                    Services | Products
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => handleAction("duplicate", quote)}>
                     <Copy className="mr-2 h-4 w-4" />

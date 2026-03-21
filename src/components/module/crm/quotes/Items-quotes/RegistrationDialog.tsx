@@ -36,10 +36,10 @@ import { useQuoteItems } from "@/hooks/crm/ItemQuote";
 
 // Schema alinhado ao seu JSON de exemplo
 const quoteItemSchema = z.object({
-    quantidade: z.coerce.number().min(1, "Mínimo de 1 unidade"),
-    preco_unico: z.coerce.number().min(0, "Preço inválido"),
-    uom: z.string().min(1, "Selecione a unidade"),
-    custo: z.coerce.number().min(0, "Custo inválido"),
+    quantidade: z.coerce.number().min(1, "Minimum of 1 unit"),
+    preco_unico: z.coerce.number().min(0, "Invalid price"),
+    uom: z.string().min(1, "Select a unit"),
+    custo: z.coerce.number().min(0, "Invalid cost"),
     fk_quotas: z.number(),
     notas: z.string().optional().nullable(),
     status_seccao: z.boolean().default(true),
@@ -67,7 +67,7 @@ export function QuoteItemRegistrationDialog({
     const { addQuoteItem, isAdding } = useQuoteItems(quoteId);
 
     // Estado para controlar se estamos selecionando Produto ou Serviço no Select
-    const [selectionType, setSelectionType] = useState<"produto" | "servico">("produto");
+    const [selectionType, setSelectionType] = useState<"product" | "service">("product");
 
     const form = useForm<QuoteItemValues>({
         resolver: zodResolver(quoteItemSchema),
@@ -87,7 +87,7 @@ export function QuoteItemRegistrationDialog({
     // Lógica para quando o usuário seleciona um item na lista
     const handleItemSelection = (id: string) => {
         const numericId = Number(id);
-        if (selectionType === "produto") {
+        if (selectionType === "product") {
             const prod = products?.find(p => p.id === numericId);
             if (prod) {
                 form.setValue("fk_produto", prod.id || null);
@@ -172,8 +172,8 @@ export function QuoteItemRegistrationDialog({
             className="sm:max-w-xl"
             open={open}
             setOpen={setOpen}
-            title="Configurar Item na Cotação"
-            description="Selecione o item e ajuste os valores."
+            title="Set up Item in Quote"
+            description="Select the item and adjust the values."
         >
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -183,35 +183,35 @@ export function QuoteItemRegistrationDialog({
                         <div className="flex gap-4 mb-2">
                             <Button 
                                 type="button" 
-                                variant={selectionType === "produto" ? "default" : "outline"}
+                                variant={selectionType === "product" ? "default" : "outline"}
                                 size="sm"
-                                onClick={() => setSelectionType("produto")}
+                                onClick={() => setSelectionType("product")}
                             >
-                                Produto
+                                Product
                             </Button>
                             <Button 
                                 type="button" 
-                                variant={selectionType === "servico" ? "default" : "outline"}
+                                variant={selectionType === "service" ? "default" : "outline"}
                                 size="sm"
-                                onClick={() => setSelectionType("servico")}
+                                onClick={() => setSelectionType("service")}
                             >
-                                Serviço
+                                Service
                             </Button>
                         </div>
 
                         <FormItem>
-                            <FormLabel>Selecionar {selectionType === "produto" ? "Produto" : "Serviço"}</FormLabel>
+                            <FormLabel>Select {selectionType === "product" ? "Product" : "Service"}</FormLabel>
                             <Select 
                                 onValueChange={handleItemSelection}
-                                value={form.getValues(selectionType === "produto" ? "fk_produto" : "fk_servico")?.toString()}
+                                value={form.getValues(selectionType === "product" ? "fk_produto" : "fk_servico")?.toString()}
                             >
                                 <FormControl>
                                     <SelectTrigger>
-                                        <SelectValue placeholder={`Escolha o ${selectionType}...`} />
+                                        <SelectValue placeholder={`Choose  ${selectionType}...`} />
                                     </SelectTrigger>
                                 </FormControl>
                                 <SelectContent>
-                                    {selectionType === "produto" 
+                                    {selectionType === "product" 
                                         ? products?.map(p => (
                                             <SelectItem key={p.id} value={p.id!.toString()}>{p.nome_produto}</SelectItem>
                                           ))
@@ -232,7 +232,7 @@ export function QuoteItemRegistrationDialog({
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel className="flex items-center gap-2">
-                                        <Layers className="h-4 w-4 text-muted-foreground" /> Quantidade
+                                        <Layers className="h-4 w-4 text-muted-foreground" /> Quantity
                                     </FormLabel>
                                     <FormControl>
                                         <Input type="number" min="1" {...field} />
@@ -247,13 +247,13 @@ export function QuoteItemRegistrationDialog({
                             name="uom"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Unidade (UoM)</FormLabel>
+                                    <FormLabel>Unit of Measure (UoM)</FormLabel>
                                     <Select onValueChange={field.onChange} value={field.value}>
                                         <FormControl><SelectTrigger><SelectValue /></SelectTrigger></FormControl>
                                         <SelectContent>
-                                            <SelectItem value="unidade">Unidade (un)</SelectItem>
-                                            <SelectItem value="hora">Hora (h)</SelectItem>
-                                            <SelectItem value="servico">Serviço (srv)</SelectItem>
+                                            <SelectItem value="unidade">Unit (un)</SelectItem>
+                                            <SelectItem value="hora">Hour (h)</SelectItem>
+                                            <SelectItem value="servico">Service (srv)</SelectItem>
                                         </SelectContent>
                                     </Select>
                                 </FormItem>
@@ -268,7 +268,7 @@ export function QuoteItemRegistrationDialog({
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel className="font-bold flex items-center gap-2">
-                                        <DollarSign className="h-4 w-4 text-green-600" /> Preço Unitário
+                                        <DollarSign className="h-4 w-4 text-green-600" /> Unit Price
                                     </FormLabel>
                                     <FormControl>
                                         <Input type="number" step="0.01" {...field} />
@@ -283,7 +283,7 @@ export function QuoteItemRegistrationDialog({
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel className="flex items-center gap-2 text-primary font-semibold">
-                                        <Calculator className="h-4 w-4" /> Total do Item
+                                        <Calculator className="h-4 w-4" /> Item Total
                                     </FormLabel>
                                     <FormControl>
                                         <Input type="number" readOnly className="bg-muted/50 font-bold" {...field} />
@@ -294,9 +294,9 @@ export function QuoteItemRegistrationDialog({
                     </div>
 
                     <DialogFooter>
-                        <Button type="button" variant="ghost" onClick={() => setOpen(false)}>Cancelar</Button>
+                        <Button type="button" variant="ghost" onClick={() => setOpen(false)}>Cancel</Button>
                         <Button type="submit" disabled={isAdding || (!form.getValues("fk_produto") && !form.getValues("fk_servico"))}>
-                            {isAdding ? "A salvar..." : "Adicionar à Cotação"}
+                            {isAdding ? "Saving..." : "Add to Quote"}
                         </Button>
                     </DialogFooter>
                 </form>

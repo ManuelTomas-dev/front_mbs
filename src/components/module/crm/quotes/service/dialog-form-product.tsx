@@ -23,11 +23,11 @@ import { useService } from "@/hooks/crm/service"; // Assumindo que você tenha e
 
 // 1. Schema para o Serviço baseado no seu JSON
 const serviceSchema = z.object({
-  nome_servico: z.string().min(3, "O nome do serviço deve ter pelo menos 3 caracteres"),
-  custo: z.coerce.number().min(0.01, "O custo deve ser maior que zero"),
+  nome_servico: z.string().min(3, "Service name must have at least 3 characters"),
+  custo: z.coerce.number().min(0.01, "Cost must be greater than zero"),
   imposto_retencao_fonte: z.boolean().default(false),
-  quantidade_equipa: z.coerce.number().min(1, "A equipa deve ter pelo menos 1 pessoa"),
-  codigo_servico: z.string().min(2, "Informe o código do serviço"),
+  quantidade_equipa: z.coerce.number().min(1, "The equipment must have at least 1 person"),
+  codigo_servico: z.string().min(2, "Enter the service code"),
   criado_por: z.number().default(1),
 });
 
@@ -72,8 +72,8 @@ function ServiceRegistrationDialog({ open, setOpen }: ServiceDialogProps) {
       className="sm:max-w-lg"
       open={open}
       setOpen={setOpen}
-      title="Registar Novo Serviço"
-      description="Adicione novos serviços ao catálogo do sistema MBS."
+      title="Register New Service"
+      description="Add new services to the MBS system catalog."
     >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
@@ -84,9 +84,9 @@ function ServiceRegistrationDialog({ open, setOpen }: ServiceDialogProps) {
             name="nome_servico"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Nome do Serviço</FormLabel>
+                <FormLabel className="text-lg font-bold">Service Name</FormLabel>
                 <FormControl>
-                  <Input placeholder="Ex: Instalação de Software" {...field} />
+                  <Input placeholder="Ex: Software Installation" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -100,7 +100,7 @@ function ServiceRegistrationDialog({ open, setOpen }: ServiceDialogProps) {
               name="codigo_servico"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Código (SKU)</FormLabel>
+                  <FormLabel>Code (SKU)</FormLabel>
                   <Input placeholder="INST001" {...field} />
                   <FormMessage />
                 </FormItem>
@@ -112,7 +112,7 @@ function ServiceRegistrationDialog({ open, setOpen }: ServiceDialogProps) {
               name="quantidade_equipa"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Pessoas na Equipa</FormLabel>
+                  <FormLabel>Team</FormLabel>
                   <Input type="number" {...field} />
                   <FormMessage />
                 </FormItem>
@@ -129,7 +129,7 @@ function ServiceRegistrationDialog({ open, setOpen }: ServiceDialogProps) {
               name="custo"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="font-bold">Custo do Serviço (AOA/USD)</FormLabel>
+                  <FormLabel className="font-bold">Service Cost (AOA/USD)</FormLabel>
                   <FormControl>
                     <Input type="number" step="0.01" className="bg-background" {...field} />
                   </FormControl>
@@ -150,7 +150,7 @@ function ServiceRegistrationDialog({ open, setOpen }: ServiceDialogProps) {
                     />
                   </FormControl>
                   <div className="space-y-1 leading-none">
-                    <FormLabel>Sujeito a Retenção na Fonte</FormLabel>
+                    <FormLabel>Apply Retention to Source</FormLabel>
                   </div>
                 </FormItem>
               )}
@@ -159,10 +159,10 @@ function ServiceRegistrationDialog({ open, setOpen }: ServiceDialogProps) {
 
           <DialogFooter>
             <Button type="button" variant="outline" onClick={() => setOpen(false)}>
-              Cancelar
+              Cancel
             </Button>
             <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "A guardar..." : "Registar Serviço"}
+              {isSubmitting ? "Saving..." : "Register Service"}
             </Button>
           </DialogFooter>
         </form>

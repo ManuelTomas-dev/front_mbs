@@ -27,10 +27,10 @@ export function LocationModuleDialog({
       <DialogContent className="sm:max-w-200 max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>
-            Gestão de Localizações
+            Location Management
           </DialogTitle>
           <DialogDescription>
-            Visualize, adicione e gerencie as localizações e contatos deste cliente.
+            Visualize, add, and generate the locations and contacts of this client.
           </DialogDescription>
         </DialogHeader>
         

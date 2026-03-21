@@ -26,12 +26,12 @@ interface DialogFormProps {
 
 
 const formSchema = z.object({
-  client_id: z.string().min(1, "Selecione um cliente"),
-  client_location_id: z.string().min(1, "Selecione uma localização"),
-  client_contact_id: z.string().min(1, "Selecione um contato"),
+  client_id: z.string().min(1, "Select a client"),
+  client_location_id: z.string().min(1, "Select a location"),
+  client_contact_id: z.string().min(1, "Select a contact"),
   opportunity_id: z.string().optional(),
-  title: z.string().min(3, "O título deve ter pelo menos 3 caracteres"),
-  currency_id: z.string().min(1, "Selecione a moeda"),
+  title: z.string().min(3, "Title must be at least 3 characters"),
+  currency_id: z.string().min(1, "Select a currency"),
   description: z.string().optional(),
   notes: z.string().optional(),
   terms_conditions: z.string().optional(),

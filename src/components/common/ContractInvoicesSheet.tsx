@@ -51,7 +51,7 @@ export function ContractInvoicesSheet({
     // Rota que definimos no backend
     const downloadUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/contract/invoice/download/${id}`
     window.open(downloadUrl, "_blank")
-    toast.info("Iniciando download...")
+    toast.info("Downloading...");
   }
 
   return (
@@ -64,12 +64,12 @@ export function ContractInvoicesSheet({
               <Receipt className="w-5 h-5 text-blue-600" />
             </div>
             <Badge variant="secondary" className="bg-blue-50 text-blue-700 hover:bg-blue-50 border-blue-100">
-              Financeiro
+              Financial
             </Badge>
           </div>
-          <SheetTitle className="text-xl font-bold">Documentos do Contrato</SheetTitle>
+          <SheetTitle className="text-xl font-bold">Contract Documents</SheetTitle>
           <SheetDescription className="text-slate-500">
-            Nº {contractNumber} • {invoices.length} documento(s) encontrado(s)
+            Number {contractNumber} • {invoices.length} document(s) found
           </SheetDescription>
         </div>
 
@@ -78,7 +78,7 @@ export function ContractInvoicesSheet({
           {isLoading ? (
             <div className="flex flex-col items-center justify-center py-20 text-slate-400">
               <Loader2 className="w-8 h-8 animate-spin mb-4" />
-              <p>Buscando invoices...</p>
+              <p>Searching for invoices...</p>
             </div>
           ) : invoices.length > 0 ? (
             <div className="space-y-4">
@@ -124,9 +124,9 @@ export function ContractInvoicesSheet({
           ) : (
             <div className="flex flex-col items-center justify-center py-20 text-center border-2 border-dashed rounded-2xl border-slate-100 bg-slate-50/30">
               <Archive className="w-10 h-10 text-slate-300 mb-4" />
-              <h4 className="text-slate-900 font-medium">Nenhum documento</h4>
+              <h4 className="text-slate-900 font-medium">No documents</h4>
               <p className="text-sm text-slate-500 max-w-50 mt-1">
-                Ainda não foram registradas invoices para este contrato.
+                No invoices have been registered for this contract yet.
               </p>
             </div>
           )}
@@ -135,11 +135,11 @@ export function ContractInvoicesSheet({
         {/* Footer Fixo com Botão de Ação */}
         <div className="p-6 border-t bg-white">
           <Button 
-            className="w-full bg-slate-900 hover:bg-slate-800 text-white h-12 rounded-xl"
+            className="w-full bg-blue-500 hover:bg-blue-500 text-white h-12 rounded-xl"
             onClick={onNewInvoice}
           >
             <Plus className="w-4 h-4 mr-2" />
-            Nova Invoice
+            New Invoice
           </Button>
         </div>
       </SheetContent>

@@ -24,14 +24,13 @@ interface DialogFormProps {
   open: boolean;
   setOpen: (value: boolean) => void;
 }
-
 const formSchema = z.object({
-  client_id: z.string().min(1, "Selecione um cliente"),
-  client_location_id: z.string().min(1, "Selecione uma localização"),
-  client_contact_id: z.string().min(1, "Selecione um contato"),
+  client_id: z.string().min(1, "Select a client"),
+  client_location_id: z.string().min(1, "Select a location"),
+  client_contact_id: z.string().min(1, "Select a contact"),
   opportunity_id: z.string().optional(),
-  title: z.string().min(3, "O título deve ter pelo menos 3 caracteres"),
-  currency_id: z.string().min(1, "Selecione a moeda"),
+  title: z.string().min(3, "Title must have at least 3 characters"),
+  currency_id: z.string().min(1, "Select a currency"),
   description: z.string().optional(),
   notes: z.string().optional(),
   terms_conditions: z.string().optional(),
@@ -54,7 +53,7 @@ import { useQuote } from "@/hooks/crm/quote";
 import { toast } from "sonner";
 
 interface DialogFormProps {
-  
+
   open: boolean;
   setOpen: (value: boolean) => void;
   onSubmitAction: (data: FormValues) => void; // Passando a lógica de salvar por prop
@@ -81,7 +80,7 @@ function DialogFormCopy({ open, setOpen, onSubmitAction }: DialogFormProps) {
   });
 
   const {
-    formState: { errors, isSubmitting},
+    formState: { errors, isSubmitting },
     watch
   } = form;
 
@@ -91,7 +90,7 @@ function DialogFormCopy({ open, setOpen, onSubmitAction }: DialogFormProps) {
 
   const { contacts } = useContact(watch("client_location_id"));
 
-  const {  createQuote } = useQuote();
+  const { createQuote } = useQuote();
 
 
   const onSubmit = async (values: FormValues) => {
@@ -138,7 +137,7 @@ function DialogFormCopy({ open, setOpen, onSubmitAction }: DialogFormProps) {
                 <FormLabel>Client</FormLabel>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
-                    <SelectTrigger>
+                    <SelectTrigger className="w-full">
                       <SelectValue placeholder="Select a client" />
                     </SelectTrigger>
                   </FormControl>
@@ -165,19 +164,22 @@ function DialogFormCopy({ open, setOpen, onSubmitAction }: DialogFormProps) {
                   <FormLabel>Client Location</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
-                      <SelectTrigger>
+                      <SelectTrigger className="w-full">
                         <SelectValue placeholder="Select location" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
                       <SelectGroup>
                         {/* Renderize suas localizações aqui */}
-                        {locations?.map((location) => (
+                        {locations?.map(({
+                          designacao_localidade_cliente,
+                          id,
+                        }) => (
                           <SelectItem
-                            key={location.id}
-                            value={String(location.id)}
+                            key={id}
+                            value={String(id)}
                           >
-                            {location.name}
+                            {designacao_localidade_cliente}
                           </SelectItem>
                         ))}
                       </SelectGroup>
@@ -197,7 +199,7 @@ function DialogFormCopy({ open, setOpen, onSubmitAction }: DialogFormProps) {
                   <FormLabel>Client Contact</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
-                      <SelectTrigger>
+                      <SelectTrigger className="w-full">
                         <SelectValue placeholder="Select contact" />
                       </SelectTrigger>
                     </FormControl>
@@ -231,7 +233,7 @@ function DialogFormCopy({ open, setOpen, onSubmitAction }: DialogFormProps) {
                   <FormLabel>Opportunity</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
-                      <SelectTrigger>
+                      <SelectTrigger className="w-full">
                         <SelectValue placeholder="Select opportunity" />
                       </SelectTrigger>
                     </FormControl>
@@ -252,7 +254,7 @@ function DialogFormCopy({ open, setOpen, onSubmitAction }: DialogFormProps) {
                   <FormLabel>Currency</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
-                      <SelectTrigger>
+                      <SelectTrigger className="w-full">
                         <SelectValue placeholder="Select currency" />
                       </SelectTrigger>
                     </FormControl>
@@ -333,8 +335,8 @@ function DialogFormCopy({ open, setOpen, onSubmitAction }: DialogFormProps) {
             <Button type="button" variant="outline" onClick={() => setOpen(false)}>
               Cancel
             </Button>
-            <Button type="submit" disabled={ isSubmitting}>
-              { isSubmitting ? "Saving..." : "Save Quote"}
+            <Button type="submit" disabled={isSubmitting}>
+              {isSubmitting ? "Saving..." : "Save Quote"}
             </Button>
           </DialogFooter>
         </form>

@@ -220,74 +220,77 @@ export function PersonnelFormDialog({ personnel, open, onOpenChange, onSubmit }:
                 required
               />
             </div>
-<div className="grid grid-cols-2 gap-2.5">
-            <div className="space-y-2">
-              <Label htmlFor="title">Title</Label>
-              <Input
-                id="title"
-                value={formData.title}
-                onChange={(e) => setFormData((prev) => ({ ...prev, title: e.target.value }))}
-                placeholder="Ex: Petroleum Engineer"
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="Location">Location</Label>
-              <Select
-                value={formData.location_id}
-                onValueChange={(value) => setFormData((prev) => ({ ...prev, location_id: value }))}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select a location" />
-                </SelectTrigger>
-                <SelectContent>
-                  {locations.map((location) => (
-                    <SelectItem key={location.id} value={location.id}>
-                      {location.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+            <div className="grid grid-cols-2 gap-2.5">
+              <div className="space-y-2">
+                <Label htmlFor="title">Title</Label>
+                <Input
+                  id="title"
+                  value={formData.title}
+                  onChange={(e) => setFormData((prev) => ({ ...prev, title: e.target.value }))}
+                  placeholder="Ex: Petroleum Engineer"
+                />
+              </div>
+              {/* Exemplo para Location */}
+              <div className="space-y-2">
+                <Label htmlFor="Location">Location</Label>
+                <Select
+                  // Converte o valor do estado para string
+                  value={formData.location_id ? String(formData.location_id) : ""}
+                  onValueChange={(value) => setFormData((prev) => ({ ...prev, location_id: value }))}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select a location" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {locations.map((location) => (
+                      // Converte o ID do mapeamento para string
+                      <SelectItem key={location.id} value={String(location.id)}>
+                        {location.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
 
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="title">Role</Label>
-              <Select
-                value={formData.role_id}
-                onValueChange={(value) => setFormData((prev) => ({ ...prev, role_id: value }))}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select a role" />
-                </SelectTrigger>
-                <SelectContent>
-                  {roles.map((role) => (
-                    <SelectItem key={role.id} value={role.id}>
-                      {role.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              {/* Repita a mesma lógica de String() para Role e WorkTitle */}
+              <div className="space-y-2">
+                <Label htmlFor="title">Role</Label>
+                <Select
+                  value={formData.role_id ? String(formData.role_id) : ""}
+                  onValueChange={(value) => setFormData((prev) => ({ ...prev, role_id: value }))}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select a role" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {roles.map((role) => (
+                      <SelectItem key={role.id} value={String(role.id)}>
+                        {role.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
 
+              <div className="space-y-2">
+                <Label htmlFor="title">Work Title</Label>
+                <Select
+                  value={formData.work_title_id ? String(formData.work_title_id) : ""}
+                  onValueChange={(value) => setFormData((prev) => ({ ...prev, work_title_id: value }))}
+                >
+                  <SelectTrigger  className="w-full">
+                    <SelectValue placeholder="Select a work title" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {workTitles.map((wt) => (
+                      <SelectItem key={wt.id} value={String(wt.id)}>
+                        {wt.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="title">workTitle</Label>
-              <Select
-                value={formData.work_title_id}
-                onValueChange={(value) => setFormData((prev) => ({ ...prev, work_title_id: value }))}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select a work title" />
-                </SelectTrigger>
-                <SelectContent>
-                  {workTitles.map((workTitle) => (
-                    <SelectItem key={workTitle.id} value={workTitle.id}>
-                      {workTitle.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-
-            </div>
-</div>
           </div>
 
           <DialogFooter>

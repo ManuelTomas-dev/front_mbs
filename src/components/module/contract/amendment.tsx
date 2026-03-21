@@ -25,11 +25,11 @@ import { useAmendment } from "@/hooks/crm/amendment";
 // 1. Schema baseado no seu JSON
 const amendmentSchema = z.object({
     // z.coerce garante que strings como "123" virem 123 (number)
-    contract_id: z.coerce.number().min(1, "ID do contrato inválido"),
-    amendment_title: z.string().min(1, "O título é obrigatório"),
-    amendment_type: z.string().min(1, "O tipo é obrigatório"),
+    contract_id: z.coerce.number().min(1, "Invalid contract ID"),
+    amendment_title: z.string().min(1, "Title is required"),
+    amendment_type: z.string().min(1, "Type is required"),
     status: z.string(),
-    effective_date: z.string().min(1, "A data de vigência é obrigatória"),
+    effective_date: z.string().min(1, "Effective date is required"),
 });
 
 type AmendmentFormValues = z.infer<typeof amendmentSchema>;
@@ -80,16 +80,15 @@ export function AmendmentCreateDialog({ open, setOpen, contractId }: AmendmentDi
                 status: values.status,
                 amendment_type: values.amendment_type
             });
-
             toast({
-                title: "Amendment registrado!",
-                description: "A alteração foi enviada para revisão.",
+                title: "Amendment registered!",
+                description: "The amendment was sent for review.",
             });
             setOpen(false);
             form.reset();
         } catch (error) {
             toast({
-                title: "Erro ao registrar",
+                title: "Error registering amendment",
                 variant: "destructive"
             });
         }
@@ -100,8 +99,8 @@ export function AmendmentCreateDialog({ open, setOpen, contractId }: AmendmentDi
             className="sm:max-w-md"
             open={open}
             setOpen={setOpen}
-            title="Registrar Amendment"
-            description="Adicione uma alteração ou extensão ao contrato atual."
+            title="Register Amendment"
+            description="Add an amendment or extension to the current contract."
         >
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
@@ -112,11 +111,11 @@ export function AmendmentCreateDialog({ open, setOpen, contractId }: AmendmentDi
                             name="amendment_title"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Título da Alteração</FormLabel>
+                                    <FormLabel>Amendment Title</FormLabel>
                                     <FormControl>
                                         <div className="relative">
                                             <FileText className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
-                                            <Input placeholder="Ex: Aditivo de Prazo" className="pl-10" {...field} />
+                                            <Input placeholder="e.g. Land Amendment" className="pl-10" {...field} />
                                         </div>
                                     </FormControl>
                                     <FormMessage />
@@ -130,18 +129,18 @@ export function AmendmentCreateDialog({ open, setOpen, contractId }: AmendmentDi
                             name="amendment_type"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Tipo</FormLabel>
+                                    <FormLabel>Type</FormLabel>
                                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                                         <FormControl>
                                             <SelectTrigger className="w-full">
-                                                <SelectValue placeholder="Selecione o tipo" />
+                                                <SelectValue placeholder="Select type" />
                                             </SelectTrigger>
                                         </FormControl>
                                         <SelectContent>
-                                            <SelectItem value="Financial">Financial </SelectItem>
-                                            <SelectItem value="Duration">Duration </SelectItem>
-                                            <SelectItem value="Compliance">Compliance </SelectItem>
-                                            <SelectItem value="Scope">Scope </SelectItem>
+                                            <SelectItem value="Financial">Financial</SelectItem>
+                                            <SelectItem value="Duration">Duration</SelectItem>
+                                            <SelectItem value="Compliance">Compliance</SelectItem>
+                                            <SelectItem value="Scope">Scope</SelectItem>
                                         </SelectContent>
                                     </Select>
                                     <FormMessage />
@@ -181,7 +180,7 @@ export function AmendmentCreateDialog({ open, setOpen, contractId }: AmendmentDi
                             name="effective_date"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Data de Vigência</FormLabel>
+                                    <FormLabel>Efective Date</FormLabel>
                                     <FormControl>
                                         <div className="relative">
                                             <CalendarIcon className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
@@ -195,8 +194,8 @@ export function AmendmentCreateDialog({ open, setOpen, contractId }: AmendmentDi
                     </div>
 
                     <DialogFooter className="pt-4">
-                        <Button type="submit" className="w-full bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg">
-                            Registrar Alteração
+                        <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white shadow-lg">
+                            Register Amendment
                         </Button>
                     </DialogFooter>
                 </form>

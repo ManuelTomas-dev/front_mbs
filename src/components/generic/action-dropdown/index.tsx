@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Eye, MoreHorizontal, Edit, Archive, Trash2, Copy } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 interface BaseItem {
   id: string | number;
@@ -16,17 +17,20 @@ interface ActionDropdownProps {
   item: BaseItem;
   setSelectedEntity?: (value: any) => void;
   setDeleteDialogOpen?: (value: boolean) => void;
+  detailsLink?: string;
 }
 
 function ActionDropdwon({
   item,
   setDeleteDialogOpen,
   setSelectedEntity,
+  detailsLink,
 }: ActionDropdownProps) {
   const handleAction = (action: string) => {
     switch (action) {
       case "view":
         if (setSelectedEntity) setSelectedEntity(item);
+
         break;
       case "edit":
         if (setSelectedEntity) setSelectedEntity(item);
@@ -51,8 +55,10 @@ function ActionDropdwon({
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem onClick={() => handleAction("view")}>
-          <Eye className="mr-2 h-4 w-4" />
-          View Details
+          <Link href={detailsLink ?? ""}>
+            <Eye className="mr-2 h-4 w-4" />
+            View Details
+          </Link>
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => handleAction("edit")}>
           <Edit className="mr-2 h-4 w-4" />

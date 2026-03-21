@@ -24,10 +24,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useContact } from "@/hooks/partner/contact";
 
 const invoiceSchema = z.object({
-    contract_id: z.string().min(1, "Contato é obrigatório"),
-    invoice_date: z.string().min(1, "Data é obrigatória"),
-    amount: z.string().min(1, "Valor é obrigatório"),
-    file: z.any().refine((file) => file?.length > 0, "O arquivo da fatura é obrigatório"),
+    contract_id: z.string().min(1, "Contract is required"),
+    invoice_date: z.string().min(1, "Date is required"),
+    amount: z.string().min(1, "Amount is required"),
+    file: z.any().refine((file) => file?.length > 0, "Invoice file is required"),
 });
 
 type InvoiceFormValues = z.infer<typeof invoiceSchema>;
@@ -71,15 +71,15 @@ export function InvoiceCreateDialog({ open, setOpen, contactData }: InvoiceDialo
 
             console.log("Enviando FormData...");
             toast({
-                title: "Invoice registrada com sucesso!",
-                description: "Fatura enviada com sucesso!",
+                title: "Invoice registered successfully!",
+                description: "File sent successfully!",
             });
             setOpen(false);
             form.reset();
         } catch (error) {
             toast({
-                title: "Erro ao registrar invoice",
-                description: "Invoice registrada sem sucesso!"
+                title: "Error registering invoice",
+                description: "An error occurred while registering the invoice. Please verify if the file is correct and try again."
             });
         }
     };
@@ -89,8 +89,8 @@ export function InvoiceCreateDialog({ open, setOpen, contactData }: InvoiceDialo
             className="sm:max-w-md"
             open={open}
             setOpen={setOpen}
-            title="Registrar Invoice"
-            description="Faça o upload da fatura correspondente a este contrato."
+            title="Register Invoice"
+            description="Upload the invoice corresponding to this contract."
         >
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
@@ -98,7 +98,7 @@ export function InvoiceCreateDialog({ open, setOpen, contactData }: InvoiceDialo
                     <div className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg border border-blue-100">
                         <User className="h-5 w-5 text-blue-600" />
                         <div>
-                            <p className="text-xs text-blue-600 font-medium">Faturar para:</p>
+                            <p className="text-xs text-blue-600 font-medium">Invoice for:</p>
                             <p className="text-sm font-bold text-blue-900">{contactData.name}</p>
                         </div>
                     </div>
@@ -109,7 +109,7 @@ export function InvoiceCreateDialog({ open, setOpen, contactData }: InvoiceDialo
                             name="invoice_date"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Data da Fatura</FormLabel>
+                                    <FormLabel>Data of Issue</FormLabel>
                                     <FormControl>
                                         <div className="relative">
                                             <CalendarIcon className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
@@ -126,11 +126,11 @@ export function InvoiceCreateDialog({ open, setOpen, contactData }: InvoiceDialo
                             name="amount"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Valor da Fatura</FormLabel>
+                                    <FormLabel>Value of Invoice</FormLabel>
                                     <FormControl>
                                         <div className="relative">
                                             <DollarSign className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
-                                            <Input placeholder="0,00" className="pl-10" {...field} />
+                                            <Input placeholder="0.00" className="pl-10" {...field} />
                                         </div>
                                     </FormControl>
                                     <FormMessage />
@@ -143,7 +143,7 @@ export function InvoiceCreateDialog({ open, setOpen, contactData }: InvoiceDialo
                             name="file"
                             render={({ field: { onChange, value, ...rest } }) => (
                                 <FormItem>
-                                    <FormLabel>Documento (PDF/PNG)</FormLabel>
+                                    <FormLabel>Invoice Document (PDF/PNG)</FormLabel>
                                     <FormControl>
                                         <div className="border-2 border-dashed border-slate-200 rounded-lg p-4 hover:bg-slate-50 transition-colors cursor-pointer relative">
                                             <input
@@ -156,7 +156,7 @@ export function InvoiceCreateDialog({ open, setOpen, contactData }: InvoiceDialo
                                             <div className="flex flex-col items-center justify-center gap-2">
                                                 <UploadCloud className="h-8 w-8 text-slate-400" />
                                                 <p className="text-sm text-slate-600 text-center">
-                                                    {form.watch("file")?.[0]?.name || "Clique para selecionar o arquivo"}
+                                                    {form.watch("file")?.[0]?.name || "Click to select the file"}
                                                 </p>
                                             </div>
                                         </div>
@@ -192,7 +192,7 @@ export function InvoiceCreateDialog({ open, setOpen, contactData }: InvoiceDialo
 
                     <DialogFooter className="pt-4">
                         <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-100">
-                            Registrar Invoice
+                            Register Invoice
                         </Button>
                     </DialogFooter>
                 </form>

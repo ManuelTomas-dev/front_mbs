@@ -34,6 +34,39 @@ export default function Page() {
     "Contract Manager",
   ];
 
+  const data = [
+    {
+      contract_number: "1",
+      client: "Manuel Tomas",
+      contract_name: "Validações",
+      status: "Pending",
+      value: "50 000kz",
+      start_date: "19/03/2026",
+      end_date: "22/03/2026",
+      contract_manager: "Edson Zongo",
+    },
+    {
+      contract_number: "1",
+      client: "Manuel Tomas",
+      contract_name: "Validações",
+      status: "Pending",
+      value: "50 000kz",
+      start_date: "19/03/2026",
+      end_date: "22/03/2026",
+      contract_manager: "Edson Zongo",
+    },
+    {
+      contract_number: "1",
+      client: "Manuel Tomas",
+      contract_name: "Validações",
+      status: "Pending",
+      value: "50 000kz",
+      start_date: "19/03/2026",
+      end_date: "22/03/2026",
+      contract_manager: "Edson Zongo",
+    },
+  ];
+
   return (
     <Container>
       {/* <Title

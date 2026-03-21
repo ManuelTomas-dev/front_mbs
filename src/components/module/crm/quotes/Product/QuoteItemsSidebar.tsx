@@ -124,14 +124,14 @@ export const QuoteItemsSidebar = () => {
                             <Code className="h-3 w-3" /> {service.codigo_servico}
                           </div>
                           <div className="flex items-center gap-1 text-muted-foreground justify-end">
-                            <UserCheck className="h-3 w-3" /> Equipa: {service.quantidade_equipa}
+                            <UserCheck className="h-3 w-3" /> team: {service.quantidade_equipa}
                           </div>
                           <div className="col-span-2 flex items-center justify-between mt-1 pt-2 border-t border-muted/30">
                             <span className="text-xs font-semibold text-green-700">
                               {service.custo.toLocaleString('pt-AO', { style: 'currency', currency: 'AOA' })}
                             </span>
                             {service.imposto_retencao_fonte && (
-                              <Badge variant="outline" className="text-[9px] py-0 h-4 text-orange-600 border-orange-200">Retenção</Badge>
+                              <Badge variant="outline" className="text-xs py-0 h-4 text-orange-600 border-orange-200">Return</Badge>
                             )}
                           </div>
                         </div>

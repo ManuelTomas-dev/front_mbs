@@ -5,7 +5,7 @@ import { List, Grid3X3, Table, Plus } from "lucide-react";
 type ViewMode = "table" | "cards" | "list";
 
 interface AddActionProps {
-  addActionName: string;
+  addActionName?: string;
   viewMode: string;
   setViewMode: React.Dispatch<React.SetStateAction<ViewMode>>;
   setAddFormOpen: (open: boolean) => void;
@@ -23,7 +23,6 @@ function AddAction({
 }: AddActionProps) {
   return (
     <div className="flex items-center space-x-2">
-      {addActionName}
       <Button
         onClick={() => {
           setSelectedEntity(null);
@@ -35,6 +34,28 @@ function AddAction({
       </Button>
 
       {children}
+
+      <Button
+        variant={viewMode === "table" ? "default" : "outline"}
+        size="sm"
+        onClick={() => setViewMode("table")}
+      >
+        <Table className="h-4 w-4" />
+      </Button>
+      <Button
+        variant={viewMode === "cards" ? "default" : "outline"}
+        size="sm"
+        onClick={() => setViewMode("cards")}
+      >
+        <Grid3X3 className="h-4 w-4" />
+      </Button>
+      <Button
+        variant={viewMode === "list" ? "default" : "outline"}
+        size="sm"
+        onClick={() => setViewMode("list")}
+      >
+        <List className="h-4 w-4" />
+      </Button>
     </div>
   );
 }

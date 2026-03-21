@@ -76,12 +76,12 @@ export function ContractAmendmentsSheet({
               <FileEdit className="w-5 h-5 text-blue-600" />
             </div>
             <Badge variant="secondary" className="bg-blue-50 text-blue-700 border-blue-100">
-              Histórico de Alterações
+              Amendment History
             </Badge>
           </div>
-          <SheetTitle className="text-xl font-bold">Aditivos (Amendments)</SheetTitle>
+          <SheetTitle className="text-xl font-bold">Amendments</SheetTitle>
           <SheetDescription className="text-slate-500">
-            Contrato Nº {contractNumber} • {amendments.length} registro(s)
+            Contract number {contractNumber} • {amendments.length} records
           </SheetDescription>
         </div>
 
@@ -90,7 +90,7 @@ export function ContractAmendmentsSheet({
           {isLoading ? (
             <div className="flex flex-col items-center justify-center py-20 text-slate-400">
               <Loader2 className="w-8 h-8 animate-spin mb-4" />
-              <p>Buscando aditivos...</p>
+              <p>Looking for amendments...</p>
             </div>
           ) : amendments.length > 0 ? (
             <div className="space-y-4">
@@ -111,7 +111,7 @@ export function ContractAmendmentsSheet({
                             {item.amendment_title}
                           </h4>
                           <span className="text-[10px] text-slate-400 uppercase tracking-wider font-medium">
-                            Tipo: {item.amendment_type}
+                            Type: {item.amendment_type}
                           </span>
                         </div>
                       </div>
@@ -125,7 +125,7 @@ export function ContractAmendmentsSheet({
                       <div className="flex items-center gap-4">
                         <div className="flex items-center gap-1.5 text-xs text-slate-500">
                           <Calendar className="w-3.5 h-3.5 text-slate-400" />
-                          <span>Vigência: {new Date(item.effective_date).toLocaleDateString()}</span>
+                          <span>Effective: {new Date(item.effective_date).toLocaleDateString()}</span>
                         </div>
                       </div>
                       <span className="text-[10px] text-slate-300">ID #{item.id}</span>
@@ -137,9 +137,9 @@ export function ContractAmendmentsSheet({
           ) : (
             <div className="flex flex-col items-center justify-center py-20 text-center border-2 border-dashed rounded-2xl border-slate-100 bg-slate-50/30">
               <Archive className="w-10 h-10 text-slate-300 mb-4" />
-              <h4 className="text-slate-900 font-medium">Nenhum aditivo</h4>
+              <h4 className="text-slate-900 font-medium">No Amendments</h4>
               <p className="text-sm text-slate-500 max-w-50 mt-1">
-                Este contrato ainda não possui alterações ou aditivos registrados.
+                There are no amendments for this contract.
               </p>
             </div>
           )}
@@ -152,7 +152,7 @@ export function ContractAmendmentsSheet({
             onClick={onNewAmendment}
           >
             <Plus className="w-4 h-4 mr-2" />
-            Novo Aditivo (Amendment)
+            New (Amendment)
           </Button>
         </div>
       </SheetContent>

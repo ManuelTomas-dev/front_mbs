@@ -132,57 +132,57 @@ export function ClientFormDialog({ client, open, onOpenChange, onSubmit }: Clien
                 id="nome_cliente"
                 value={formData.nome_cliente}
                 onChange={(e) => setFormData((prev) => ({ ...prev, nome_cliente: e.target.value }))}
-                placeholder="Ex: Petroleum Engineer"
+                placeholder="Ex: John Doe"
                 required
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="sede_cliente">Sede *</Label>
+              <Label htmlFor="sede_cliente">Address</Label>
               <Input
                 id="sede_cliente"
                 value={formData.sede_cliente}
                 onChange={(e) => setFormData((prev) => ({ ...prev, sede_cliente: e.target.value }))}
-                placeholder="Ex: Petroleum Engineer"
+                placeholder="Ex: 123 Main St"
                 required
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="nif">NIF *</Label>
+              <Label htmlFor="nif">Tax ID</Label>
               <Input
                 id="nif"
                 value={formData.nif}
                 onChange={(e) => setFormData((prev) => ({ ...prev, nif: e.target.value }))}
-                placeholder="Ex:  500543453434"
+                placeholder="Ex:  123456789"
                 required
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="codigo_postal">Código Postal *</Label>
+              <Label htmlFor="codigo_postal">Postal Code</Label>
               <Input
                 id="codigo_postal"
                 value={formData.codigo_postal}
                 onChange={(e) => setFormData((prev) => ({ ...prev, codigo_postal: e.target.value }))}
-                placeholder="Ex:  500543453434"
+                placeholder="Ex:  12345"
                 required
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="telefone_principal">Telefone Principal *</Label>
+              <Label htmlFor="telefone_principal">Main Phone</Label>
               <Input
                 id="telefone_principal"
                 value={formData.telefone_principal}
                 onChange={(e) => setFormData((prev) => ({ ...prev, telefone_principal: e.target.value }))}
-                placeholder="Ex:  500543453434"
+                placeholder="Ex:  (123) 456-7890"
                 required
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="endereco_sede">Endereço da Sede *</Label>
+              <Label htmlFor="endereco_sede">Address</Label>
               <Input
                 id="endereco_sede"
                 value={formData.endereco_sede}
                 onChange={(e) => setFormData((prev) => ({ ...prev, endereco_sede: e.target.value }))}
-                placeholder="Ex:  500543453434"
+                placeholder="Ex:  123 Main St"
                 required
               />
             </div>

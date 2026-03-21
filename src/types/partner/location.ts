@@ -14,7 +14,7 @@
 // }
 
 export interface ILocation {
-  name: string;
+  designacao_localidade_cliente: string;
   endereco: string;
   id: string;
   id_client: string;

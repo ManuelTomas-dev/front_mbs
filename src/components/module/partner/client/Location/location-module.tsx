@@ -81,7 +81,7 @@ export function LocationModule({ clientId, onLocationSelect }: LocationModulePro
 
 
     const handleAction = (action: string, location: ILocation) => {
-        console.log(`[v0] ${action} action for location:`, location.name)
+        console.log(`[v0] ${action} action for location:`, location.designacao_localidade_cliente)
 
         switch (action) {
             case "view":
@@ -100,18 +100,7 @@ export function LocationModule({ clientId, onLocationSelect }: LocationModulePro
                 setSelectedLocationForList(location)
                 setListDialogOpen(true)
                 break;
-            //   case "duplicate":
-            //     createLocation({
-            //       name: `${location.name} (Cópia)`,
-            //       endereco: location.endereco,
-            //       cidade: location.cidade,
-            //     })
-            //     break
-            //   case "delete":
-            //     if (confirm("Are you sure you want to delete this location?")) {
-            //       deleteLocation(location.id)
-            //     }
-            //     break
+        
         }
     }
 
@@ -148,20 +137,20 @@ export function LocationModule({ clientId, onLocationSelect }: LocationModulePro
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
                 <DropdownMenuItem onClick={() => handleAction("view", location)}>
-                    <Eye className="mr-2 h-4 w-4" /> Ver Detalhes
+                    <Eye className="mr-2 h-4 w-4" /> View Details
                 </DropdownMenuItem>
 
-                {/* NOVAS OPÇÕES */}
+                {/* NEW OPTIONS */}
                 <DropdownMenuItem onClick={() => handleAction("add_contact", location)}>
-                    <UserPlus className="mr-2 h-4 w-4" /> Adicionar Contato
+                    <UserPlus className="mr-2 h-4 w-4" /> Add Contact
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => handleAction("view_contacts", location)}>
-                    <Users className="mr-2 h-4 w-4" /> Listar Contatos
+                    <Users className="mr-2 h-4 w-4" /> List Contacts
                 </DropdownMenuItem>
 
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => handleAction("edit", location)}>
-                    <Edit className="mr-2 h-4 w-4" /> Editar
+                    <Edit className="mr-2 h-4 w-4" /> Edit
                 </DropdownMenuItem>
                 {/* ... delete etc */}
             </DropdownMenuContent>
@@ -183,7 +172,7 @@ export function LocationModule({ clientId, onLocationSelect }: LocationModulePro
                     {filteredLocations.map((location) => (
                         <TableRow key={location.id}>
                             <TableCell className="font-medium">
-                                {location.name}
+                                {location.designacao_localidade_cliente}
                             </TableCell>
                             <TableCell>{location.endereco}</TableCell>
                             <TableCell>
@@ -208,7 +197,7 @@ export function LocationModule({ clientId, onLocationSelect }: LocationModulePro
                 <Card key={location.id}>
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-sm font-medium">
-                            {location.name}
+                            {location.designacao_localidade_cliente}
                         </CardTitle>
                         <ActionDropdown location={location} />
                     </CardHeader>
@@ -237,7 +226,7 @@ export function LocationModule({ clientId, onLocationSelect }: LocationModulePro
                     <CardContent className="flex items-center justify-between p-4">
                         <div className="flex-1 space-y-1">
                             <div className="flex items-center gap-3">
-                                <h3 className="font-medium">{location.name}</h3>
+                                <h3 className="font-medium">{location.designacao_localidade_cliente}</h3>
                                 <Badge variant={location.status_localizacao_cliente ? "default" : "secondary"}>
                                     {location.status_localizacao_cliente ? "Active" : "Inactive"}
                                 </Badge>
@@ -255,7 +244,7 @@ export function LocationModule({ clientId, onLocationSelect }: LocationModulePro
 
     const filteredLocations = locations.filter(
         (location) =>
-            location.name
+            location.designacao_localidade_cliente
                 .toLowerCase()
                 .includes(searchTerm.toLowerCase()) ||
             location.endereco.toLowerCase().includes(searchTerm.toLowerCase())
@@ -397,7 +386,7 @@ export function LocationModule({ clientId, onLocationSelect }: LocationModulePro
                     open={contactDialogOpen}
                     onOpenChange={setContactDialogOpen}
                     locationId={Number(selectedLocationForContact.id)}
-                    locationName={selectedLocationForContact.name}
+                    locationName={selectedLocationForContact.designacao_localidade_cliente}
                 />
             )}
 
@@ -407,7 +396,7 @@ export function LocationModule({ clientId, onLocationSelect }: LocationModulePro
                     open={listDialogOpen}
                     onOpenChange={setListDialogOpen}
                     locationId={Number(selectedLocationForList.id)}
-                    locationName={selectedLocationForList.name}
+                    locationName={selectedLocationForList.designacao_localidade_cliente}
                 />
             )}
         </div>

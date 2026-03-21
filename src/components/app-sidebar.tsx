@@ -121,15 +121,15 @@ const moduleCategories: NavItem[] = [
           {
             title: "Services Order",
             items: [
-              { title: "Personnel Details", href: "/personnel/details" },
+              { title: "Personnel Details", href: "/operation/services-order/details" },
               { title: "Job Title", href: "#/personnel/job-title" },
               {
                 title: "Qualification & Certification",
-                href: "#/personnel/qualification-certification",
+                href: "/operation/services-order/qualification-certification",
               },
               {
                 title: "Qualification List",
-                href: "#/personnel/qualification-list",
+                href: "/operation/services-order/qualification-list",
               },
             ],
           },
@@ -137,10 +137,10 @@ const moduleCategories: NavItem[] = [
             title: "Project",
             //icon: MapPin,
             items: [
-              { title: "Tasks", href: "#/project/tasks#" },
+              { title: "Tasks", href: "/operation/project/tasks" },
               {
                 title: "Project Management",
-                href: "#/project/project-management#",
+                href: "/operation/project/project-management",
               },
             ],
           },
@@ -386,7 +386,7 @@ const moduleCategories: NavItem[] = [
       },
       {
         title: "Supplier Management", items: [
-          { title: "Supplier List", href: "/partner/supplier" },
+          { title: "Supplier List", href: "#/partner/supplier" },
           { title: "Supplier Category", href: "#/partners/category-supplier" },
 
         ]
@@ -523,12 +523,12 @@ function NavUserHorizontal({ user }: { user: any }) {
   const { user: useLoggedUser } = useAuthStore();
   return (
     <div className="flex items-center gap- border-l border-border pl-2 cursor-pointer ml-2">
-      <button className="relative text-gray-600 hover:text-gray-900 mr-2">
+      <div className="relative text-gray-600 hover:text-gray-900 mr-2">
         <div className="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white font-bold">
           9
         </div>
         <Bell size={20} />
-      </button>
+      </div>
       <Avatar className="bg-blue-200">
         <AvatarFallback  className="flex items-center justify-center">
         <span>

@@ -21,6 +21,8 @@ interface TableProps<T extends BaseData> {
   setDeleteDialog?: (value: boolean) => void;
   children?: React.ReactNode;
   style?: string;
+  addActions?: boolean;
+  detailsLink?: string;
 }
 
 function Table<T extends BaseData>({
@@ -30,6 +32,8 @@ function Table<T extends BaseData>({
   setDeleteDialog,
   children,
   style,
+  addActions = true,
+  detailsLink,
 }: TableProps<T>) {
   const firstItem = data?.[0] ?? {};
   const dataKeys = Object.keys(firstItem).filter((key) => key != "id");
@@ -42,7 +46,9 @@ function Table<T extends BaseData>({
             {tableHeads.map((head) => {
               return <TableHead>{head}</TableHead>;
             })}
-            <TableHead className="text-right">Actions</TableHead>
+            {addActions ? (
+              <TableHead className="text-right">Actions</TableHead>
+            ) : null}
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -51,12 +57,13 @@ function Table<T extends BaseData>({
               {dataKeys.map((key, index, array) => (
                 <>
                   <TableCell>{item[key]}</TableCell>
-                  {index === array.length - 1 ? (
+                  {addActions && index === array.length - 1 ? (
                     <TableCell className="text-right">
                       <ActionDropdown
                         item={item}
                         setSelectedEntity={setSelectedItem}
                         setDeleteDialogOpen={setDeleteDialog}
+                        detailsLink={detailsLink}
                       />{" "}
                     </TableCell>
                   ) : null}

@@ -196,97 +196,97 @@ export function ClientModule() {
         </div>
     )
 
- const renderCardsView = () => (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredClients.map((client) => (
-            <Card key={client.id} className="overflow-hidden border-none shadow-lg hover:shadow-xl transition-shadow duration-300 bg-linear-to-br from-card to-muted/50">
-                {/* Header decorativo estilo ID Card */}
-                <div className="h-2 bg-primary w-full" />
-                
-                <CardHeader className="flex flex-row items-center gap-4 pb-2">
-                    <Avatar className="h-16 w-16 border-2 border-background shadow-sm">
-                        <AvatarImage src={`https://api.dicebear.com/7.x/initials/svg?seed=${client.nome_cliente}`} />
-                        <AvatarFallback className="bg-primary/10 text-primary">
-                            {client.nome_cliente.substring(0, 2).toUpperCase()}
-                        </AvatarFallback>
-                    </Avatar>
-                    
-                    <div className="flex-1 min-w-0">
-                        <CardTitle className="text-lg font-bold truncate leading-tight">
-                            {client.nome_cliente}
-                        </CardTitle>
-                        <Badge variant={client.status_cliente ? "default" : "secondary"} className="mt-1 text-[10px] h-5">
-                            {client.status_cliente ? "ATIVO" : "INATIVO"}
-                        </Badge>
+    const renderCardsView = () => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredClients.map((client) => (
+                <Card key={client.id} className="overflow-hidden border-none shadow-lg hover:shadow-xl transition-shadow duration-300 bg-linear-to-br from-card to-muted/50">
+                    {/* Header decorativo estilo ID Card */}
+                    <div className="h-2 bg-primary w-full" />
+
+                    <CardHeader className="flex flex-row items-center gap-4 pb-2">
+                        <Avatar className="h-16 w-16 border-2 border-background shadow-sm">
+                            <AvatarImage src={`https://api.dicebear.com/7.x/initials/svg?seed=${client.nome_cliente}`} />
+                            <AvatarFallback className="bg-primary/10 text-primary">
+                                {client.nome_cliente.substring(0, 2).toUpperCase()}
+                            </AvatarFallback>
+                        </Avatar>
+
+                        <div className="flex-1 min-w-0">
+                            <CardTitle className="text-lg font-bold truncate leading-tight">
+                                {client.nome_cliente}
+                            </CardTitle>
+                            <Badge variant={client.status_cliente ? "default" : "secondary"} className="mt-1 text-[10px] h-5">
+                                {client.status_cliente ? "ATIVO" : "INATIVO"}
+                            </Badge>
+                        </div>
+
+                        <ActionDropdown client={client} />
+                    </CardHeader>
+
+                    <CardContent className="pt-2">
+                        {/* Linha Divisória Sutil */}
+                        <div className="h-px w-full bg-border mb-4 opacity-50" />
+
+                        <div className="grid grid-cols-1 gap-y-3">
+                            {/* Seção de Dados estilo Cartão de Identificação */}
+                            <div className="flex items-center gap-3 text-sm text-muted-foreground group">
+                                <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                                    <CreditCard className="h-4 w-4 text-primary/70" />
+                                </div>
+                                <div className="flex flex-col">
+                                    <span className="text-[10px] font-semibold text-muted-foreground/50 uppercase tracking-widest">NIF</span>
+                                    <span className="font-mono text-xs">{client.nif || "000000000"}</span>
+                                </div>
+                            </div>
+
+                            <div className="flex items-center gap-3 text-sm text-muted-foreground group">
+                                <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                                    <MapPin className="h-4 w-4 text-primary/70" />
+                                </div>
+                                <div className="flex flex-col">
+                                    <span className="text-[10px] font-semibold text-muted-foreground/50 uppercase tracking-widest">SEDE</span>
+                                    <span className="truncate text-xs font-medium">{client.sede_cliente}</span>
+                                </div>
+                            </div>
+
+                            <div className="flex items-center gap-3 text-sm text-muted-foreground group">
+                                <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                                    <Phone className="h-4 w-4 text-primary/70" />
+                                </div>
+                                <div className="flex flex-col">
+                                    <span className="text-[10px] font-semibold text-muted-foreground/50 uppercase tracking-widest">CONTATO</span>
+                                    <span className="text-xs font-medium">{client.telefone_principal}</span>
+                                </div>
+                            </div>
+
+                            <div className="flex items-center gap-3 text-sm text-muted-foreground group">
+                                <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                                    <Calendar className="h-4 w-4 text-primary/70" />
+                                </div>
+                                <div className="flex flex-col">
+                                    <span className="text-[10px] font-semibold text-muted-foreground/50 uppercase tracking-widest">REGISTRO</span>
+                                    <span className="text-xs font-medium">
+                                        {new Date(client.data_registro_cliente).toLocaleDateString("en-US", {
+                                            month: 'short',
+                                            year: 'numeric'
+                                        })}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </CardContent>
+
+                    {/* Rodapé Decorativo discreto */}
+                    <div className="px-6 py-2 bg-muted/30 border-t border-border flex justify-between items-center">
+                        <span className="text-[9px] font-bold text-muted-foreground/40 tracking-tighter uppercase">MBS Partner Client System</span>
+                        <div className="flex gap-1">
+                            <div className="w-1.5 h-1.5 rounded-full bg-primary/40 animate-pulse" />
+                        </div>
                     </div>
-                    
-                    <ActionDropdown client={client} />
-                </CardHeader>
-
-                <CardContent className="pt-2">
-                    {/* Linha Divisória Sutil */}
-                    <div className="h-px w-full bg-border mb-4 opacity-50" />
-                    
-                    <div className="grid grid-cols-1 gap-y-3">
-                        {/* Seção de Dados estilo Cartão de Identificação */}
-                        <div className="flex items-center gap-3 text-sm text-muted-foreground group">
-                            <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                                <CreditCard className="h-4 w-4 text-primary/70" />
-                            </div>
-                            <div className="flex flex-col">
-                                <span className="text-[10px] font-semibold text-muted-foreground/50 uppercase tracking-widest">NIF</span>
-                                <span className="font-mono text-xs">{client.nif || "000000000"}</span>
-                            </div>
-                        </div>
-
-                        <div className="flex items-center gap-3 text-sm text-muted-foreground group">
-                            <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                                <MapPin className="h-4 w-4 text-primary/70" />
-                            </div>
-                            <div className="flex flex-col">
-                                <span className="text-[10px] font-semibold text-muted-foreground/50 uppercase tracking-widest">SEDE</span>
-                                <span className="truncate text-xs font-medium">{client.sede_cliente}</span>
-                            </div>
-                        </div>
-
-                        <div className="flex items-center gap-3 text-sm text-muted-foreground group">
-                            <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                                <Phone className="h-4 w-4 text-primary/70" />
-                            </div>
-                            <div className="flex flex-col">
-                                <span className="text-[10px] font-semibold text-muted-foreground/50 uppercase tracking-widest">CONTATO</span>
-                                <span className="text-xs font-medium">{client.telefone_principal}</span>
-                            </div>
-                        </div>
-
-                        <div className="flex items-center gap-3 text-sm text-muted-foreground group">
-                            <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                                <Calendar className="h-4 w-4 text-primary/70" />
-                            </div>
-                            <div className="flex flex-col">
-                                <span className="text-[10px] font-semibold text-muted-foreground/50 uppercase tracking-widest">REGISTRO</span>
-                                <span className="text-xs font-medium">
-                                    {new Date(client.data_registro_cliente).toLocaleDateString("en-US", {
-                                        month: 'short',
-                                        year: 'numeric'
-                                    })}
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </CardContent>
-
-                {/* Rodapé Decorativo discreto */}
-                <div className="px-6 py-2 bg-muted/30 border-t border-border flex justify-between items-center">
-                   <span className="text-[9px] font-bold text-muted-foreground/40 tracking-tighter uppercase">MBS Partner Client System</span>
-                   <div className="flex gap-1">
-                       <div className="w-1.5 h-1.5 rounded-full bg-primary/40 animate-pulse" />
-                   </div>
-                </div>
-            </Card>
-        ))}
-    </div>
-)
+                </Card>
+            ))}
+        </div>
+    )
 
     const renderListView = () => (
         <div className="space-y-2">
@@ -438,7 +438,7 @@ export function ClientModule() {
                 setAddLocationOpen(open)
                 if (!open) setSelectedClient(null) // Limpa ao fechar
             }} clientId={selectedClient ? selectedClient.id : ""} />
-            
+
             {/* 
             <DeleteConfirmationDialog
                 open={deleteDialogOpen}

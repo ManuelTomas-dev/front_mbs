@@ -15,7 +15,7 @@ export function ContractActivitySidebar({ invoices, amendments, isLoading }: Sid
       <CardHeader className="border-b bg-slate-50/50 py-4">
         <CardTitle className="text-sm font-bold flex items-center gap-2">
           <ArrowUpRight className="w-4 h-4 text-blue-500" />
-          Atividade Recente
+          Recent Activity
         </CardTitle>
       </CardHeader>
       
@@ -24,9 +24,9 @@ export function ContractActivitySidebar({ invoices, amendments, isLoading }: Sid
           
           {/* Seção de Amendments */}
           <div className="space-y-3">
-            <h4 className="text-[10px] font-bold uppercase text-slate-400 tracking-widest">Últimos Aditivos</h4>
+            <h4 className="text-[10px] font-bold uppercase text-slate-400 tracking-widest">Last Amendments</h4>
             {amendments.length === 0 ? (
-              <p className="text-xs text-slate-500 italic">Nenhum aditivo.</p>
+              <p className="text-xs text-slate-500 italic">No amendments.</p>
             ) : (
               amendments.slice(0, 5).map((adm) => (
                 <div key={adm.id} className="p-3 rounded-lg bg-blue-50 border border-blue-100 space-y-1">
@@ -47,9 +47,9 @@ export function ContractActivitySidebar({ invoices, amendments, isLoading }: Sid
 
           {/* Seção de Invoices */}
           <div className="space-y-3">
-            <h4 className="text-[10px] font-bold uppercase text-slate-400 tracking-widest">Invoices Recentes</h4>
+            <h4 className="text-[10px] font-bold uppercase text-slate-400 tracking-widest">Recent Invoices</h4>
             {invoices.length === 0 ? (
-              <p className="text-xs text-slate-500 italic">Nenhuma invoice.</p>
+              <p className="text-xs text-slate-500 italic">No invoices.</p>
             ) : (
               invoices.slice(0, 5).map((inv) => (
                 <div key={inv.id} className="p-3 rounded-lg bg-blue-50 border border-blue-100 space-y-1">

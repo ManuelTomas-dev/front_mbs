@@ -24,22 +24,22 @@ import { DialogFooter } from "@/components/ui/dialog";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import z from "zod";
-import { toast } from "sonner";
 import { Separator } from "@/components/ui/separator";
 import { useProduct } from "@/hooks/crm/product";
+import { toast } from "@/hooks/use-toast";
 
 // 1. Schema atualizado para o Produto
 const productSchema = z.object({
-  nome_produto: z.string().min(3, "Nome deve ter pelo menos 3 caracteres"),
-  marca: z.string().min(1, "Informe a marca"),
-  modelo: z.string().min(1, "Informe o modelo"),
+  nome_produto: z.string().min(3, { message: "Name too short" }),
+  marca: z.string().min(1, { message: "Brand not informed" }),
+  modelo: z.string().min(1, { message: "Model not informed" }),
   fabricante: z.string().optional(),
-  grupo: z.string().min(1, "Selecione um grupo"),
-  preco_fornecedor: z.coerce.number().min(0.01, "Preço inválido"),
-  percentagem_lucro: z.coerce.number().min(0, "Lucro inválido"),
+  grupo: z.string().min(1, { message: "Select a group" }),
+  preco_fornecedor: z.coerce.number().min(0.01, { message: "Price too low" }),
+  percentagem_lucro: z.coerce.number().min(0, { message: "Profit too low" }),
   valor_final: z.coerce.number(),
   iva: z.boolean().default(true),
-  stock: z.coerce.number().min(0, "Stock não pode ser negativo"),
+  stock: z.coerce.number().min(0, { message: "Stock cannot be negative" }),
 });
 
 type ProductFormValues = z.infer<typeof productSchema>;
@@ -96,12 +96,12 @@ function ProductRegistrationDialog({ open, setOpen }: ProductDialogProps) {
         nome_produto: values.nome_produto
       });
 
-      toast.success("Product registered successfully!");
+      toast({title: "Success", description: "Product registered successfully!"});
       setOpen(false);
       form.reset();
     } catch (err) {
       console.error("Error creating product:", err);
-      toast.error("Error creating product: Please try again.");
+      toast({description: "Error creating product: Please try again."});
     }
   };
 
@@ -110,8 +110,8 @@ function ProductRegistrationDialog({ open, setOpen }: ProductDialogProps) {
       className="sm:max-w-2xl"
       open={open}
       setOpen={setOpen}
-      title="Registar Novo Produto"
-      description="Preencha os dados técnicos e comerciais do produto."
+      title="Register New Product"
+      description="Enter the technical and commercial data of the product."
     >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -122,7 +122,7 @@ function ProductRegistrationDialog({ open, setOpen }: ProductDialogProps) {
             name="nome_produto"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Nome do Produto</FormLabel>
+                <FormLabel>Product Name</FormLabel>
                 <FormControl>
                   <Input placeholder="Ex: Laptop Dell XPS 15" {...field} />
                 </FormControl>
@@ -137,7 +137,7 @@ function ProductRegistrationDialog({ open, setOpen }: ProductDialogProps) {
               name="marca"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Marca</FormLabel>
+                  <FormLabel>Brand</FormLabel>
                   <Input placeholder="Dell" {...field} />
                   <FormMessage />
                 </FormItem>
@@ -148,7 +148,7 @@ function ProductRegistrationDialog({ open, setOpen }: ProductDialogProps) {
               name="modelo"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Modelo</FormLabel>
+                  <FormLabel>Model</FormLabel>
                   <Input placeholder="XPS 15 9520" {...field} />
                   <FormMessage />
                 </FormItem>
@@ -162,7 +162,7 @@ function ProductRegistrationDialog({ open, setOpen }: ProductDialogProps) {
               name="fabricante"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Fabricante</FormLabel>
+                  <FormLabel>Manufacturer</FormLabel>
                   <Input placeholder="Dell Inc." {...field} />
                   <FormMessage />
                 </FormItem>
@@ -173,7 +173,7 @@ function ProductRegistrationDialog({ open, setOpen }: ProductDialogProps) {
               name="grupo"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Grupo/Categoria</FormLabel>
+                  <FormLabel>Group / Category</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger>
@@ -181,8 +181,8 @@ function ProductRegistrationDialog({ open, setOpen }: ProductDialogProps) {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="Computadores">Computadores</SelectItem>
-                      <SelectItem value="Periféricos">Periféricos</SelectItem>
+                      <SelectItem value="Computer">Computer</SelectItem>
+                      <SelectItem value="Peripherals">Peripherals</SelectItem>
                       <SelectItem value="Software">Software</SelectItem>
                     </SelectContent>
                   </Select>
@@ -201,7 +201,7 @@ function ProductRegistrationDialog({ open, setOpen }: ProductDialogProps) {
               name="preco_fornecedor"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Preço Fornecedor</FormLabel>
+                  <FormLabel>Supplier Price</FormLabel>
                   <FormControl>
                     <Input type="number" step="0.01" {...field} />
                   </FormControl>
@@ -214,7 +214,7 @@ function ProductRegistrationDialog({ open, setOpen }: ProductDialogProps) {
               name="percentagem_lucro"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Lucro (%)</FormLabel>
+                  <FormLabel>Profit (%)</FormLabel>
                   <FormControl>
                     <Input type="number" {...field} />
                   </FormControl>
@@ -227,7 +227,7 @@ function ProductRegistrationDialog({ open, setOpen }: ProductDialogProps) {
               name="valor_final"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-primary font-bold">Valor Final</FormLabel>
+                  <FormLabel className="text-primary font-bold">Final Value</FormLabel>
                   <FormControl>
                     <Input type="number" readOnly className="bg-background font-bold" {...field} />
                   </FormControl>
@@ -243,7 +243,7 @@ function ProductRegistrationDialog({ open, setOpen }: ProductDialogProps) {
               name="stock"
               render={({ field }) => (
                 <FormItem className="flex-1">
-                  <FormLabel>Quantidade em Stock</FormLabel>
+                  <FormLabel> Stock</FormLabel>
                   <Input type="number" {...field} />
                   <FormMessage />
                 </FormItem>
@@ -261,7 +261,7 @@ function ProductRegistrationDialog({ open, setOpen }: ProductDialogProps) {
                     />
                   </FormControl>
                   <div className="space-y-1 leading-none">
-                    <FormLabel>Aplicar IVA</FormLabel>
+                    <FormLabel>Aplly IVA</FormLabel>
                   </div>
                 </FormItem>
               )}
@@ -270,10 +270,10 @@ function ProductRegistrationDialog({ open, setOpen }: ProductDialogProps) {
 
           <DialogFooter className="pt-6">
             <Button type="button" variant="outline" onClick={() => setOpen(false)}>
-              Cancelar
+              Cancel
             </Button>
             <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "A guardar..." : "Registar Produto"}
+              {isSubmitting ? "Registering..." : "Register"}
             </Button>
           </DialogFooter>
         </form>

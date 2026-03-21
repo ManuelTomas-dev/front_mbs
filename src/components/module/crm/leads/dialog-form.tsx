@@ -63,14 +63,14 @@ interface ILead {
 }
 
 const leadSchema = z.object({
-  reference: z.string().min(1, "A referência é obrigatória"),
-  inquiry_email: z.string().email("E-mail de inquérito inválido"),
-  description: z.string().min(5, "Descreva detalhadamente o interesse"),
-  status: z.string().min(1, "Selecione o estado"),
-  interest: z.string().min(1, "Selecione o nível de interesse"),
-  id_client_contact: z.string().min(1, "Selecione um contacto"),
-  id_source: z.string().min(1, "Selecione a fonte"),
-  id_owner: z.string().min(1, "Atribua um gestor"),
+  reference: z.string().min(1, "Reference is required"),
+  inquiry_email: z.string().email("Invalid inquiry email"),
+  description: z.string().min(5, "Description must be at least 5 characters"),
+  status: z.string().min(1, "Select a status"),
+  interest: z.string().min(1, "Select an interest level"),
+  id_client_contact: z.string().min(1, "Select a contact"),
+  id_source: z.string().min(1, "Select a source"),
+  id_owner: z.string().min(1, "Select an owner"),
 });
 
 type LeadFormValues = z.infer<typeof leadSchema>;

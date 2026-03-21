@@ -63,7 +63,7 @@ export function AuthForm({ className, ...props }: AuthFormProps) {
             <span className="w-full border-t" />
           </div>
           <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-background px-2 text-muted-foreground">
+            <span className=" px-2 text-muted-foreground">
               Welcome back, good to see you again!
             </span>
           </div>
@@ -97,7 +97,7 @@ export function AuthForm({ className, ...props }: AuthFormProps) {
           </div>
 
           <Link
-            href="/esqueci-senha"
+            href="#/esqueci-senha"
             className="text-sm text-accent-plum-600 hover:underline block text-right"
           >
             Forgot your password?

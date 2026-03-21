@@ -30,11 +30,11 @@ export function ContactDialog({ open, onOpenChange, locationId, locationName }: 
     setIsSubmitting(true)
     try {
       await createContact({ ...data, id_client_location: locationId })
-      toast({ title: "Sucesso", description: "Contato adicionado com sucesso!" })
+      toast({ title: "Success", description: "Contact added successfully!" })
       reset()
       onOpenChange(false)
     } catch (error) {
-      toast({ title: "Erro", description: "Falha ao adicionar contato.", variant: "destructive" })
+      toast({ title: "Error", description: "Failed to add contact.", variant: "destructive" })
     } finally {
       setIsSubmitting(false)
     }
@@ -44,29 +44,29 @@ export function ContactDialog({ open, onOpenChange, locationId, locationName }: 
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Novo Contato para <Badge>{locationName}</Badge></DialogTitle>
+          <DialogTitle>New Contact for <Badge>{locationName}</Badge></DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div className="space-y-2">
-            <Label>Nome do Contato</Label>
-            <Input {...register("nome_contato")} required placeholder="Ex: Pedro" />
+            <Label>Contact Name</Label>
+            <Input {...register("nome_contato")} required placeholder="Ex: John" />
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label>Telefone</Label>
-              <Input {...register("phone")} required placeholder="923..." />
+              <Label>Phone</Label>
+              <Input {...register("phone")} required placeholder="Ex: 123..." />
             </div>
             <div className="space-y-2">
               <Label>Email</Label>
-              <Input {...register("email")} type="email" required placeholder="exemplo@gmail.com" />
+              <Input {...register("email")} type="email" required placeholder="Ex: example@gmail.com" />
             </div>
           </div>
           <div className="space-y-2">
             <Label>LinkedIn</Label>
-            <Input {...register("linkedin")} placeholder="URL ou 'none'" />
+            <Input {...register("linkedin")} placeholder="URL or 'none'" />
           </div>
           <Button type="submit" className="w-full" disabled={isSubmitting}>
-            {isSubmitting ? "Salvando..." : "Adicionar Contato"}
+            {isSubmitting ? "Saving..." : "Add Contact"}
           </Button>
         </form>
       </DialogContent>
